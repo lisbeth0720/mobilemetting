@@ -1,0 +1,203 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link rel="stylesheet" href="../css/mui.min.css">
+		<style>
+			html,body,#msgContent{
+				height: 100%;
+				background: #fff;
+			}
+			#msgUl{
+				border: none;
+				padding: 20px 0;
+				width: 90%;
+				margin: auto;
+			}
+			#msgUl li{
+				line-height: 40px;
+			}
+			#infoBtn{
+				text-align: center;
+			}
+			#infoBtn button{
+				margin-right: 10px;
+				margin-top: 20px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div id="msgContent">
+			<ul class="mui-table-view" id="msgUl">
+				
+			</ul>
+			
+			<div id="infoBtn">
+				
+			</div>
+		</div>
+		<script src="../js/mui.min.js"></script>
+		<script src="../js/common.js"></script>
+		<script type="text/javascript">
+			mui.init();
+			var messageId=window.location.href.split("ID=")[1];
+			console.log(messageId);
+			getOneMsg();
+			(function($,doc){
+		
+			}(mui,document))
+			
+			function getOneMsg(){
+				mui.ajax(baseURL+'api/infrom/getone?rnd='+Math.random(999)*1000,{
+					dataType:'json',
+					type:'get',
+					async:false,
+					timeout:10000,
+					data:{
+						"id":messageId
+					},
+					headers:{
+						"Authorization":TicketStr
+					},success:function(data){
+						
+						if(data.code=="0"){
+							var dataStr=data.data;
+							var Type=dataStr.MsgType;
+							var dataContent=dataStr.Title.split("@")[1];
+							var status=dataStr.Status;
+							var MessageContent=dataStr.MessageContent;
+							var table=document.getElementById("msgUl");
+							var msgArr=dataContent.split("；");
+							var btnTable=document.getElementById("infoBtn");
+							var btnStr="";
+							var InstanceID="";
+							var NodeID="";
+							if(dataStr.Title.split("@")[0].indexOf("InstanceID")>=0){
+								InstanceID=dataStr.Title.split("@")[0].split("InstanceID=")[1].split("&")[0];	
+							}
+							if(dataStr.Title.split("@")[0].indexOf("NodeID")>=0){
+								NodeID=dataStr.Title.split("@")[0].split("NodeID=")[1].split("&")[0];
+							}
+							
+							for(var i=0;i<msgArr.length;i++){
+								var li=document.createElement("li");
+								if(i==0){
+									var tempArr=msgArr[i].split("】");
+									li.innerHTML=tempArr[0]+"】<br>"+tempArr[1];
+									
+								}else{
+									li.innerHTML=msgArr[i];
+								}
+								table.appendChild(li);
+							}
+							if(status=='1'){
+								var li=document.createElement("li");
+								li.innerHTML=""
+								btnStr="";
+								
+							}else if(status=='2'){
+								var li=document.createElement("li");
+								li.style.color="#006cff";
+								li.innerHTML="您已同意";
+								table.appendChild(li);
+							}else if(status=='3'){
+								var li=document.createElement("li");
+								li.style.color="red";
+								li.innerHTML="您已拒绝";
+								table.appendChild(li);
+							}else{
+								if(Type=="1"||Type=="8"){
+									btnStr='<button type="button" onclick="mesApproval(true,'+InstanceID+','+NodeID+')">同意</button><button type="button" onclick="mesApproval(false,'+InstanceID+','+NodeID+')">拒绝</button>';
+								}else if(Type=="2"){
+									btnStr='<button type="button" onclick="orderMeeting(true)">同意</button><button type="button" onclick="orderMeeting(false)">拒绝</button>'
+								}else{
+									btnStr='';
+								}
+							}
+							
+							btnTable.innerHTML=btnStr;
+						}else if(data.code=="30001"){//无效token、无权限
+							top.location.href="../login.html";
+						}else if(data.code=="30006"){
+							getMaxTicket();
+						}else{
+							top.location.href="../login.html";
+						}
+					},error:function(err){
+						
+					}
+				})
+			}
+			//确认、拒绝参会
+			function orderMeeting(type){
+			
+				var verifyModel={
+					"isOK":type,
+					"processContent":"",
+					"MsgID":messageId
+				}
+				mui.ajax(baseURL+'api/conf/approval?rnd='+Math.random(999)*1000,{
+					dataType:'json',
+					type:'post',
+					async:false,
+					timeout:10000,
+					data:verifyModel,
+					headers:{
+						"Authorization":TicketStr
+					},success:function(data){
+						
+						if(data.code=="0"){
+							window.location.href="message.html";
+						}else if(data.code=="30001"){//无效token、无权限
+							top.location.href="../login.html";
+						}else if(data.code=="30006"){
+							getMaxTicket();
+						}else{
+							top.location.href="../login.html";
+						}
+					},error:function(err){
+						
+					}
+				})
+			}
+			//审批同意、拒绝
+			function mesApproval(type,inID,nodeID){
+				var verifyModel={
+					"isOK":type,
+					"processContent":"",
+					"inID":inID,
+					"nodeID":nodeID,
+					"MsgID":messageId
+				}
+				mui.ajax(baseURL+'api/order/approval?rnd='+Math.random(999)*1000,{
+					dataType:'json',
+					type:'post',
+					async:false,
+					timeout:10000,
+					data:verifyModel,
+					headers:{
+						"Authorization":TicketStr
+					},success:function(data){
+						
+						if(data.code=="0"){
+							window.location.href="message.html";
+						}else if(data.code=="30001"){//无效token、无权限
+							top.location.href="../login.html";
+						}else if(data.code=="30006"){
+							getMaxTicket();
+						}else{
+							top.location.href="../login.html";
+						}
+					},error:function(err){
+						
+					}
+				})
+			}
+		</script>
+	</body>
+
+</html>

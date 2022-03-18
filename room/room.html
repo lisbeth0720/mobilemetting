@@ -1,0 +1,516 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../css/mui.min.css" rel="stylesheet" />
+		<link href="../css/style.css" rel="stylesheet" />
+		<link rel="stylesheet" type="text/css" href="../css/mui.picker.min.css" />
+		<style>
+			
+			.mui-media-body{
+			
+				padding-left:10px;
+			}
+			.mui-pull-bottom-tips {
+			    text-align: center;
+			    background-color: #efeff4;
+			    font-size: 15px;
+			    line-height: 40px;
+			    color: #777;
+			}
+			.mui-pull-top-tips {
+				position: absolute;
+				top: -20px;
+				left: 50%;
+				margin-left: -25px;
+				width: 40px;
+				height: 40px;
+				border-radius: 100%;
+				z-index: 1;
+			}
+			.mui-bar~.mui-pull-top-tips {
+				top: 24px;
+			}
+			.mui-pull-top-wrapper {
+				width: 42px;
+				height: 42px;
+				display: block;
+				text-align: center;
+				background-color: #efeff4;
+				border: 1px solid #ddd;
+				border-radius: 25px;
+				background-clip: padding-box;
+				box-shadow: 0 4px 10px #bbb;
+				overflow: hidden;
+			}
+			.mui-pull-top-tips.mui-transitioning {
+				-webkit-transition-duration: 200ms;
+				transition-duration: 200ms;
+			}
+			.mui-pull-top-tips .mui-pull-loading {
+				
+				margin: 0;
+			}
+			.mui-slider{
+				height:92px;
+			}
+			.selectContent p{
+				margin-top: 10px;
+				background: #fff;
+				text-align: right;
+				padding-right: 10px;
+				line-height: 30px;
+			}
+			.mui-off-canvas-right {
+				color: #fff;
+			}
+			.title {
+				margin: 35px 15px 10px;
+			}
+			.title+.content {
+				margin: 10px 15px 35px;
+				color: #bbb;
+				text-indent: 1em;
+				font-size: 14px;
+				line-height: 24px;
+			}
+			h5.mui-content-padded:first-child {
+				margin-top: 12px !important;
+			}
+			.mui-btn {
+				font-size: 16px;
+				padding: 8px;
+				margin: 3px;
+			}
+			.ui-alert {
+				text-align: center;
+				padding: 20px 10px;
+				font-size: 16px;
+			}
+			
+			.mui-off-canvas-wrap.mui-slide-in .mui-off-canvas-right{
+				background:#fff;
+			}
+			.commonTime{
+				height:30px;
+				line-height: 30px;
+				border-top:1px solid #ccc;
+				border-bottom: 1px solid #ccc;
+				margin-top:10px;
+				margin-bottom: 10px;
+			}
+			#.commonTime span{
+				display: block;
+				margin:0px 10px;
+			}
+			.commonSelectTime{
+				float: left;
+				margin-left:10px;
+			}
+			.selectBtn{
+				float: right;
+				margin-right: 10px;
+			}
+			.mui-icon{
+				width:20px;
+				float: right;
+				margin: 0!important;
+				margin-top:3px!important;	
+			}
+			#selectNumCount{
+				margin: 0;
+				padding: 0px 10px;
+				
+				line-height: 20px;
+				font-size: 14px;
+				display: block;
+				height: 100%;
+				float: right;
+				margin-right: 10px;
+				width: 100px;
+				border: none;
+				text-align: right;
+			}
+			#selectDevice{
+				margin: 0;
+				padding: 0px 10px;
+				
+				line-height: 20px;
+				font-size: 14px;
+				display: block;
+				height: 100%;
+				float: right;
+				margin-right: 10px;
+				width: 150px;
+				border: none;
+				text-align: right;
+			}
+			.selectDevice{
+				color:#8f8f94;
+				font-size: 14px;
+			}
+			#roomDeviceList li{
+				display: block;
+				float: left;
+				font-size: 4px;
+				border: 1px solid #888;
+				margin-right: 5px;
+				padding: 2px;
+				margin-left: 10px;
+				margin-bottom: 10px;
+			}
+			.bottomBtn{
+				position: absolute;
+				bottom: 0px;
+				width: 100%;
+				height: 40px;
+				background: #f7f7f7;
+			}
+			.bottomBtn button{
+				width: 50%;
+				border: none;
+				margin-left: 0;
+				box-sizing: border-box;
+				margin-right: 0px;
+				float: left;
+				height: 100%;
+				border-radius: 0;
+			}
+			.activeBtn{
+				background: #007aff;
+				color: #fff;
+				font-size: 14px;
+			}
+			.mui-toast-container {bottom: 50% !important;}  
+			
+		</style>
+	</head>
+
+	<body>
+		<!--侧滑菜单容器-->
+		<div id="offCanvasWrapper" class="mui-off-canvas-wrap mui-draggable">
+			<!--菜单部分-->
+			<aside id="offCanvasSide" class="mui-off-canvas-right">
+				<div id="offCanvasSideScroll" class="mui-scroll-wrapper">
+					<div class="mui-scroll">
+						<p id="selectStartTime" class="commonTime">
+							<span id="startTime" align="left" class="commonSelectTime">开始时间</span>
+							<span id='time1' class="selectBtn" align="right" data-options='{}'>选择开始时间
+								<span class="mui-icon mui-icon-forward"></span>
+							</span>							
+						</p>
+						<p id="selectEndTime" class="commonTime">
+							<span id="endTime" align="left" class="commonSelectTime">结束时间</span>
+							<span id='time2' class="selectBtn" align="right"data-options='{}'>选择结束时间
+								<span class="mui-icon mui-icon-forward"></span>
+							</span>
+						</p>
+						<p class="commonTime">
+							<span class="commonSelectTime">参会人数</span>
+							<input id="selectNumCount" class="commonInput" type="text" value="" placeholder="容纳人数" autocomplete='off'/>
+						</p>
+						<div class="selectDevice">
+							<p class="commonTime">
+								<span style="margin-left: 10px;">设备名</span>
+								<input id="selectDevice" class="commonInput" type="text" value="" placeholder="多个设备用英文,分隔 " autocomplete='off'/>
+							</p>
+							<!-- <ul id="roomDeviceList">
+								
+							</ul> -->
+						</div>
+					</div>
+					<div class="bottomBtn">
+						<button type="button" class="commSubmitBtn" id="resetBtn">
+							重置
+						</button>
+						<button type="button" class="commSubmitBtn activeBtn" id="submitBtn">
+							确认
+						</button>
+					</div>
+				</div>
+			</aside>
+			<div id="roomList1" class="mui-inner-wrap mui-iframe-wrapper mui-control-content mui-active">
+				<!-- 使用iframe可以避免上拉加载和左滑冲突的问题 -->
+				<iframe src="roomList.html" id="iframeList"></iframe>
+				<!-- 左滑可避免左边底层区域误点 -->
+				<div class="mui-off-canvas-backdrop"></div>
+			</div>
+		</div>
+		<script src="../js/mui.min.js"></script>
+		<script src="../js/mui.enterfocus.js"></script>
+		<script src="../js/app.js"></script>
+		<script src="../js/common.js"></script>
+		<script src="../js/mui.picker.min.js"></script>
+		<script type="text/javascript">		
+			var startTime="";
+			var endTime="";
+			var deviceID="";
+			var peopleCount="";
+			
+			(function($, doc){								
+				var result = $('.selectBtn');
+				var btns = $('.selectBtn');
+				btns.each(function(i, btn) {
+					btn.addEventListener('tap', function() {
+						var _self = this;
+						if(_self.picker) {
+							_self.picker.show(function (rs) {
+								result.innerText = '选择结果: ' + rs.text;
+								_self.picker.dispose();
+								_self.picker = null;
+							});
+						} else {
+							this.setAttribute("data-options",getNowDate());
+							var optionsJson = this.getAttribute('data-options') || '{}';
+							var options = JSON.parse(optionsJson);
+							var id = this.getAttribute('id');
+						
+							/*
+							 * 首次显示时实例化组件
+							 * 示例为了简洁，将 options 放在了按钮的 dom 上
+							 * 也可以直接通过代码声明 optinos 用于实例化 DtPicker
+							 */
+							_self.picker = new $.DtPicker(options);
+							_self.picker.show(function(rs) {
+								/*
+								 * rs.value 拼合后的 value
+								 * rs.text 拼合后的 text
+								 * rs.y 年，可以通过 rs.y.vaue 和 rs.y.text 获取值和文本
+								 * rs.m 月，用法同年
+								 * rs.d 日，用法同年
+								 * rs.h 时，用法同年
+								 * rs.i 分（minutes 的第二个字母），用法同年
+								 */
+								if(_self.id=="time1"){
+									var time2=document.getElementById('time2').innerText;
+									if(isNaN(Date.parse(time2))){
+										_self.innerText=rs.text;
+									}else{
+										var time1val=Date.parse(rs.text);
+										var time2val=Date.parse(time2);
+										if(time2val-time1val>(1000*timeSpace*60)){
+											_self.innerText=rs.text;
+										}else{
+											_self.picker.dispose();
+											_self.picker = null;
+											mui.toast("开始时间不能小于最短时间间隔");
+										}
+									}
+								}else if(_self.id=="time2"){
+									var time1=document.getElementById('time1').innerText;
+									if(isNaN(Date.parse(time1))){
+										_self.innerText=rs.text;
+									}else{
+										var time1val=Date.parse(document.getElementById('time1').innerText);
+										var time2val=Date.parse(rs.text);
+										if(time2val-time1val>(1000*timeSpace*60)){
+											_self.innerText=rs.text;
+										}else{
+											_self.picker.dispose();
+											_self.picker = null;
+											mui.toast("会议时间不能小于最短时间间隔");
+										}
+									}
+									
+								}
+								
+								/* 
+								 * 返回 false 可以阻止选择框的关闭
+								 * return false;
+								 */
+								/*
+								 * 释放组件资源，释放后将将不能再操作组件
+								 * 通常情况下，不需要示放组件，new DtPicker(options) 后，可以一直使用。
+								 * 当前示例，因为内容较多，如不进行资原释放，在某些设备上会较慢。
+								 * 所以每次用完便立即调用 dispose 进行释放，下次用时再创建新实例。
+								 */
+								//_self.picker.dispose();
+								_self.picker = null;
+							});
+						}
+						
+					}, false);
+				});
+				
+				var resetBtn=$("#resetBtn");
+				
+			}(mui, document));	
+			var submitCommonBtn=document.querySelector(".commSubmitBtn");
+			var retBtn=document.querySelector("#resetBtn");
+			var submitBtn=document.querySelector("#submitBtn");
+			var _iframe = document.getElementById('iframeList').contentWindow;
+			retBtn.addEventListener('tap', function() {	
+				var _self=this;
+				if(_self.classList.contains('activeBtn')){
+					
+				}else{
+					_self.classList.add("activeBtn");
+					submitBtn.classList.remove("activeBtn")
+				}
+				document.getElementById("time1").innerHTML="选择开始时间";
+				document.getElementById("time2").innerHTML="选择结束时间";
+				document.getElementById("selectNumCount").value="";
+				var tempDevices=document.querySelectorAll(".roomDeviceItem");
+				for(var i=0;i<tempDevices.length;i++){
+					tempDevices[i].classList.remove("activeBtn");
+				}
+			})
+			submitBtn.addEventListener('tap', function() {
+			
+				var _self=this;
+				if(_self.classList.contains('activeBtn')){
+					
+				}else{
+					_self.classList.add("activeBtn");
+					retBtn.classList.remove("activeBtn");		
+				}
+				startTime=document.getElementById("time1").innerHTML;
+				if(isNaN(startTime)){
+					startTime="";
+				}else{
+					startTime=document.getElementById("time1").innerHTML;
+				}
+				
+				endTime=document.getElementById("time2").innerHTML;
+				if(isNaN(endTime)){
+					endTime="";
+				}else{
+					endTime=document.getElementById("time2").innerHTML;
+				}
+				deviceID=document.getElementById("selectDevice").value;
+				peopleCount=document.getElementById("selectNumCount").value;
+				_iframe.getRoomList(false);//搜索即重新加载
+				//关闭侧滑页面并执行搜索的函数
+				offCanvasWrapper.offCanvas('close');
+			})
+			/*-------------------------------侧滑导航栏-----------------------------------------*/
+			//侧滑容器父节点
+			var offCanvasWrapper = mui('#offCanvasWrapper');
+			 //主界面容器
+			var offCanvasInner =offCanvasWrapper[0].querySelector('#roomList');
+			 //菜单容器
+			var offCanvasSide = document.getElementById("offCanvasSide");
+			var classList = offCanvasWrapper[0].classList;
+			 //移动效果是否为整体移动
+			var moveTogether = false;
+			 //侧滑容器的class列表，增加.mui-slide-in即可实现菜单移动、主界面不动的效果
+			 offCanvasSide.classList.remove('mui-transitioning');
+			 offCanvasSide.setAttribute('style', '');
+			 classList.remove('mui-slide-in');
+			 classList.remove('mui-scalable');
+			 classList.add('mui-slide-in');
+			 offCanvasWrapper.offCanvas().refresh();
+			 mui('#offCanvasSideScroll').scroll(); 
+			 mui('#offCanvasContentScroll').scroll();
+			
+			 
+			//实现ios平台的侧滑关闭页面；
+			if (mui.os.plus && mui.os.ios) {
+				offCanvasWrapper[0].addEventListener('shown', function(e) { //菜单显示完成事件
+					plus.webview.currentWebview().setStyle({
+						'popGesture': 'none'
+					});
+				});
+				offCanvasWrapper[0].addEventListener('hidden', function(e) { //菜单关闭完成事件
+					plus.webview.currentWebview().setStyle({
+						'popGesture': 'close'
+					});
+				});
+			}
+			//变换侧滑动画移动效果
+			function btnClick(){
+				
+				offCanvasWrapper.offCanvas('show');
+			}
+			/*---------------------------------侧滑导航栏-----------------------------------------*/
+			function getNowDate(){
+				var str="";
+				var date=new Date();
+				var year=date.getFullYear();
+				var month=date.getMonth()+1;
+				var day=date.getDate();
+				var hours=date.getHours();
+				var minutes=date.getMinutes();
+				str='{"beginYear":'+year+',"beginMonth":'+month+',"beginDay":'+day+',"beginHours":'+hours+',"beginMinutes":'+minutes+'}';
+				return str;
+			}
+			//获取设备列表
+			//setTimeout("getDeviceList()",2000);
+			//getDeviceList()
+			function getDeviceList(){
+				
+				var deviceQuery={
+					roomid:"",
+					deviceName:"",
+					type:"",
+					sort:"",
+					pageSize:"100",
+					page:1
+				};
+				var table=document.getElementById("roomDeviceList");
+				table.innerHTML="";
+				mui.ajax(baseURL+'/api/device/getdeviceList',{
+					data:deviceQuery,
+					dataType:'json',
+					type:'get',
+					timeout:10000,
+					headers:{
+						"Authorization":TicketStr
+					},success:function(data){
+						if(data.code=="0"){
+							var dataList=data.data.data;
+							
+							for(var i=0;i<dataList.length;i++){
+								var deviceName=dataList[i].DeviceName;
+								var deviceId=dataList[i].ID;
+								var li = document.createElement('li');
+								li.className = 'roomDeviceItem';
+								li.setAttribute('deviceName',deviceName);
+								li.setAttribute('deviceId',deviceId);
+								li.innerHTML = deviceName;
+								table.appendChild(li);	
+							}
+							addDeviceTap();
+						}else if(data.code=="30001"){//无效token、无权限
+						
+							top.location.href="../login.html";
+						}else if(data.code=="30006"){//短token无效,获取长token
+							getMaxTicket();
+						}else{
+							mui.toast(data.message);
+						}
+						
+					},error:function(err){
+						console.log(err);
+					}
+				})
+			}
+			var deviceArr=[];
+			function addDeviceTap(){
+				var parentId=document.querySelector("#roomDeviceList");
+				var deviceItem=parentId.querySelectorAll(".roomDeviceItem");
+				
+				for(let i=0;i<deviceItem.length;i++){
+	
+					deviceItem[i].addEventListener('tap', function() {
+						var _self = this;
+						if(_self.getAttribute("class").indexOf("activeBtn")>=0){
+							_self.classList.remove("activeBtn");
+							deviceArr.remove(_self.getAttribute("devicename"));
+							deviceID=deviceArr.join(',');
+						}else{
+							_self.classList.add("activeBtn");
+							deviceArr.push(_self.getAttribute("devicename"));
+							deviceID=deviceArr.join(',');
+						}
+						//console.log(deviceID);
+					})
+				}
+			}
+		</script>
+	</body>
+
+</html>

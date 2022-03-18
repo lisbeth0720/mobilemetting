@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html class="ui-page-login">
+    <head>
+	  <meta charset="utf-8" />
+	  <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+	  <title>登录</title>
+	  <link href="css/mui.min.css" rel="stylesheet" />
+	  <link href="css/style.css" rel="stylesheet" />
+	  <style>
+          html, body{
+            height: 100%;
+            width: 100%;
+            overflow: hidden;
+         }
+
+         * {
+            padding: 0;
+            margin: 0;
+         }
+
+        .login-layout{
+			padding-bottom: 0;
+			background-color: #e4e6e9;
+			min-height: 100%;
+			font-family: 'Open Sans';
+			font-size: 13px;
+			color: #393939;
+			line-height: 1.5;
+            background: url(images/login/login.jpg) no-repeat;
+            background-size: 100% 100%;
+            /*min-height:700px;*/
+            /*overflow:hidden;*/
+        }
+
+        fieldset{
+		    border: 0;
+	    }
+       
+       .login-layout label {
+            margin-bottom: 11px;
+        }
+       .lable12 {
+            position: absolute;
+            z-index:3;
+            top: 2px;
+            width: 100%;
+            font-size: 20px;
+            color: #fff;
+            text-align: center;
+        }
+       .loginBox{
+		    width: 98%;
+		    margin: auto;
+		    position:relative;
+		    top: 134.4px;
+	    }
+	   .input-icon {
+	        position: relative;
+	   }
+	   .block {
+	        display: block!important;
+	   }
+	   .login-layout label {
+	        margin-bottom: 11px;
+	   }
+	  
+	   .lable11 {
+	        position: absolute;
+	        z-index: 3;
+	        top: 2px;
+	        left: 6px;
+	        width: 39px;
+	        background: url(images/login/user.png) no-repeat;
+	    }
+	   .icon-logo{
+		    background-color: transparent;
+		    border-radius: 8px !important;
+		    width: 67%;
+		    height: 44px;
+		    margin: auto;
+	    }
+	  
+	    #login-form .labelDiv{
+	  		background-color: transparent;
+	  	    border-radius: 8px !important;
+	  		width: 67%;
+	  		height: 44px;
+	  	    margin: auto;
+	  		border:1px solid #fcfcfc;
+	   }
+	   .labelDiv img{
+	   		width: 20px;
+	  		height: 20px;
+	  	    position: absolute;
+	  		top: 8px;
+	  	    left: 6px;
+	    }
+	    #companyID{
+		   color: black;
+		   width: 100%;
+		   position:absolute;
+		   top:-1px;
+		   height: 43px; 
+		   background: rgba(255,255,255,.5);
+		   border-bottom-right-radius: 8px !important;
+		   border-top-right-radius: 8px !important;
+		   padding: 10px;
+	    }
+	  
+	  #login,#login:focus{
+		  border-radius: 8px;
+		  left: 0px;
+		  position: relative;
+		  border: 1px solid transparent;
+		  text-align: center;
+		  background-color: transparent;
+		  border-color: white;
+		  width: 239px;
+		  height: 45px;
+		  font-size:20px;
+		  color:#fff;
+		  width: 67%;
+		  margin:1px;
+		  letter-spacing:3px
+	  }
+	  #pwd{
+		  border:0px;
+		  color: black;
+		  width: 82%;
+		  height: 43px;
+		  margin-left:18.5%;
+		  background: rgba(255,255,255,.5);
+		  border-bottom-right-radius: 8px !important;
+		  border-top-right-radius: 8px !important;
+		  padding: 10px;
+	  }
+	  #name{
+		  border:0px;
+		  color: black;
+		  width: 82%;
+		  height: 43px;
+		  margin-left: 18.5%;
+		  background-color: rgba(255,255,255,.5);
+		  border-bottom-right-radius: 8px !important;
+		  border-top-right-radius: 8px !important;
+		  padding: 10px;
+	  }
+	
+	  #icon-select{
+		  height:12px;
+		  width:12px;
+		  background:url('images/login/icon_select.png') no-repeat;
+		  background-size:100% 100%;
+		  position:absolute;
+		  top:50%;
+		  right:5px;
+		  transform: translate(0,-50%);
+		  z-index:4;
+	  }
+    </style>
+</head>
+<body class="login-layout">
+	<div class="loginBox">
+	   <form id='login-form'>
+		  <fieldset>
+			<label class="block">
+				<div class="block input-icon icon-logo">
+					<img src="images/login/hflogo.png" style="width: 50px;height: 50px;position: absolute;left: 36%;">												
+				</div>
+			</label>												
+			<label class="block">
+				<div class="block input-icon icon-logo">
+					<label for="loginname" class="login-label name-label lable12">慧峰会议预约</label>
+				</div>
+			</label>
+			<label class="block">
+				  <div class="block input-icon labelDiv" style="">
+					  <select class="form-control" id="companyID"></select>	
+					   <i id="icon-select"></i>
+				 </div>
+			</label>
+			<label class="block">
+				<div class="block input-icon labelDiv">
+					<label for="loginname" class="login-label name-label lable11">
+						<img src="images/login/user.png" />
+					</label>
+					<input  autocapitalize="off" autocorrect="off"  type="text" class="form-control" id="name" placeholder="登录名">														
+				</div>
+			</label>
+			<label class="block">
+				<div class="block input-icon labelDiv">
+					 <label for="loginpwd" class="login-label name-label lable11">
+						 <img src="images/login/password.png" />
+					 </label>
+					  <input type="password" class="form-control" id="pwd" placeholder="密码">				
+				</div>
+			</label>
+			<label class="block">
+			  <div class="block input-icon" style="left:16%;">
+				  <button type="button" id="login">登录</button>
+			  </div>
+			</label>
+		</fieldset>
+	</form>
+  </div>
+  <script src="js/mui.min.js"></script>
+  <script src="js/mui.enterfocus.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/common.js"></script>
+    <script>
+		 (function($, doc) {
+		 	$.init({
+		 		statusBarBackground: '#f7f7f7'	
+		 	});
+		 	var loginBtn=document.querySelector("#login");
+		 	loginBtn.addEventListener("click",function(){
+		 		loginUser();
+		 	})	
+
+		 }(mui, document));
+		 selectDWH();
+		 function selectDWH(){//获取单位号
+			 mui.ajax(baseURL+"/api/users/getcompanyList",{
+			     dataType:"json",
+			     type:"GET",
+			     timeout:10000,
+			     success:function(data){
+					 var result =data.data;
+					 //var list1='<option value="">请选择单位号</option>';
+					if(getCookie("companyName")){
+						 var list1="<option value='"+getCookie("companyID")+"'>"+getCookie("companyName")+"</option>";
+					 }else{
+					 	var list1='<option value="">请选择单位号</option>';
+					 }
+					 for (var i=0;i<result.length;i++ ){
+						list1+="<option value='"+result[i].companyID+"'>"+result[i].companyName+"</option>";              
+					 }
+					 document.getElementById("companyID").innerHTML=list1;
+					 if (result.length == 0) {
+						 document.getElementById("companyID").innerHTML=result[0].companyID;
+					 }
+				 },
+				 error:function(){
+				
+				 }
+			 })
+		 }
+          //写Cookie
+          function addCookie(objName, objValue, objHours) {
+              var str = objName + "=" + escape(objValue); //编码
+              if (objHours > 0) {//为0时不设定过期时间，浏览器关闭时cookie自动消失
+                  var date = new Date();
+                  var ms = objHours * 3600 * 1000;
+                  date.setTime(date.getTime() + ms);
+                  str += "; expires=" + date.toGMTString();
+              }
+              document.cookie = str;
+          }
+          
+          //读Cookie
+          function getCookie(objName) {//获取指定名称的cookie的值
+              var arrStr = document.cookie.split("; ");
+              for (var i = 0; i < arrStr.length; i++) {
+                  var temp = arrStr[i].split("=");
+                  if (temp[0] == objName) return unescape(temp[1]);  //解码
+              }
+              return "";
+          }
+		  
+		  
+		 function loginUser(){	
+		 	var companyID=document.querySelector("#companyID").value;
+		 	var username=document.querySelector("#name").value;
+		 	var password=document.querySelector("#pwd").value;
+			
+			var select = document.getElementById("companyID");
+			var index = select.selectedIndex;
+			var options = select.options;
+			var companyName = options[index].text;
+			addCookie("companyID",companyID, 0);
+			addCookie("companyName",companyName, 0);
+			
+		 	mui.ajax(baseURL+'/api/users/gettokenbyjwt/v2',{
+		 		data:{
+		 			companyid:companyID,
+		 			username:username,
+		 			password:password
+		 		},
+		 		dataType:'json',
+		 		type:'get',
+		 		timeout:10000,
+		 		success:function(data){
+		 			if(data.code=="0"){
+		 				var Ticket=data.data.Ticket;
+		 				var MaxTicket=data.data.MaxTicket;
+		 				localStorage.setItem('Ticket',Ticket);
+		 				localStorage.setItem('MaxTicket',MaxTicket);
+		 				localStorage.setItem('username',username);
+						
+						mui.openWindow({
+						  url: 'index.html',
+						  id:'’' ,
+						  styles: {                             // 窗口参数 参考5+规范中的WebviewStyle,也就是说WebviewStyle下的参数都可以在此设置
+						    titleNView: {                       // 窗口的标题栏控件
+						      titleText:"首页",                // 标题栏文字,当不设置此属性时，默认加载当前页面的标题，并自动更新页面的标题
+						      titleColor:"#000000",             // 字体颜色,颜色值格式为"#RRGGBB",默认值为"#000000"
+						      titleSize:"17px",                 // 字体大小,默认17px
+						      backgroundColor:"#F7F7F7",        // 控件背景颜色,颜色值格式为"#RRGGBB",默认值为"#F7F7F7"
+						      progress:{                        // 标题栏控件的进度条样式
+						        color:"#00FF00",                // 进度条颜色,默认值为"#00FF00"  
+						        height:"2px"                    // 进度条高度,默认值为"2px"         
+						      },
+						      splitLine:{                       // 标题栏控件的底部分割线，类似borderBottom
+						        color:"#CCCCCC",                // 分割线颜色,默认值为"#CCCCCC"  
+						        height:"1px"                    // 分割线高度,默认值为"2px"
+						      }
+						    }
+						  },
+						  createNew:false,//是否重复创建同样id的webview，默认为false:不重复创建，直接显示
+						  show:{
+							autoShow:true//,//页面loaded事件发生后自动显示，默认为true
+						   
+						  },
+						  waiting:{
+							autoShow:true,//自动显示等待框，默认为true
+							title:'正在加载...',//等待对话框上显示的提示内容
+							
+						  }
+						});
+		 			}else if(data.code=="20004"){
+						alert("登录失败，请检查单位号、账户或者密码是否有误!");
+					}else if(data.code=="30003"){
+						alert("缺少必填项!");
+					}
+		 		},
+		 		error:function(xhr,type,errorThrown){
+		 			//异常处理；
+		 			console.log(type);
+		 		} 
+		 	})  
+		 }
+    </script>
+</body>
+</html>
+
+

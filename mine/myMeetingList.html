@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<meta charset="utf-8">
+<title>我的会议</title>
+<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+<link rel="stylesheet" href="../css/mui.min.css">
+<style>
+	*{
+		list-style: none;
+		padding:0;
+		margin:0;
+		touch-action: none;
+	}
+	html,body {
+		background-color: #efeff4;
+	}
+	.mui-bar~.mui-content .mui-fullscreen {
+		top: 44px;
+		height: auto;
+	}
+   .mui-pull-top-tips {
+		position: absolute;
+		top: -20px;
+		left: 50%;
+		margin-left: -25px;
+		width: 40px;
+		height: 40px;
+		border-radius: 100%;
+		z-index: 1;
+	 }
+	.mui-bar~.mui-pull-top-tips {
+		top: 24px;
+	}
+	.mui-pull-top-wrapper {
+		width: 42px;
+		height: 42px;
+		display: block;
+		text-align: center;
+		background-color: #efeff4;
+		border: 1px solid #ddd;
+		border-radius: 25px;
+		background-clip: padding-box;
+		box-shadow: 0 4px 10px #bbb;
+		overflow: hidden;
+    }
+	.mui-pull-top-tips.mui-transitioning {
+		-webkit-transition-duration: 200ms;
+		transition-duration: 200ms;
+	}
+	.mui-pull-top-tips .mui-pull-loading {
+		/*-webkit-backface-visibility: hidden;
+		-webkit-transition-duration: 400ms;
+		transition-duration: 400ms;*/
+		margin: 0;
+	 }
+	.mui-pull-top-wrapper .mui-icon,.mui-pull-top-wrapper .mui-spinner {
+		margin-top: 7px;
+	}
+	
+	.mui-pull-bottom-tips {
+		text-align: center;
+		background-color: #efeff4;
+		font-size: 15px;
+		line-height: 40px;
+		color: #777;
+	}
+	.mui-pull-top-canvas {
+		overflow: hidden;
+		background-color: #fafafa;
+		border-radius: 40px;
+		box-shadow: 0 4px 10px #bbb;
+		width: 40px;
+		height: 40px;
+		margin: 0 auto;
+	}
+	.mui-pull-top-canvas canvas {
+		width: 40px;
+	}
+	.mui-slider-indicator.mui-segmented-control {
+		background-color: #efeff4;
+	}
+	
+	#sliderSegmentedControl .mui-scroll{
+		width:100%;
+		border:none;
+	}
+	#no,#have {
+		width:50%;
+	}
+	#list,#list2{
+			margin-top:12px;
+		}
+		.mui-table-view{
+			background:none;
+		}
+		.dataList{
+			height:120px;
+			width:100%;
+			border-bottom:1px solid #E7E7E7;
+			position:relative;
+			background:#fff;
+		}
+		.mui-slider .mui-slider-group .mui-slider-item .dataList img{
+			/* float: left; */
+			/* margin-right: 10px; */
+			height:70px;
+			width:80px;
+			/* margin-top:20px; */
+			/* margin-left:20px; */
+			position:absolute;
+			top:50%;
+			left:20px;
+			transform: translate(0,-50%);
+		}
+		.dataList ul{
+			/* margin-top:20px; */
+			position:absolute;
+			left:110px;
+			top:50%;
+			transform: translate(0,-50%);
+		}
+		
+		.size{
+			 font-size: 14px;
+			 text-align: left;
+			 color:#333;
+		}
+		.time,.address{
+			font-size: 14px;
+			text-align: left;
+			margin-left: 0px;
+			color: #666666;
+			/* padding-top:2px;
+			box-sizing: border-box; */
+		}
+		.status{
+			font-size: 12px;
+			color: #999;
+		}
+		
+		#free{
+			display:block;
+			margin:100px auto 20px auto;
+			height: 105px;
+			width: 105px;
+		}
+		#free2{
+			text-align: center;
+			width:100%;
+			
+		}		
+</style>
+</head>
+<body>
+<div class="mui-content">
+	<div id="slider" class="mui-slider mui-fullscreen">
+		<div id="sliderSegmentedControl" class="mui-scroll-wrapper mui-slider-indicator mui-segmented-control mui-segmented-control-inverted">
+			<div class="mui-scroll">
+				<a class="mui-control-item mui-active" href="#item1mobile" id="no">
+					未开
+				</a>
+				<a class="mui-control-item" href="#item2mobile" id="have">
+					已开
+				</a>
+			</div>
+		</div>
+	<!-- 下面这行选中出现下划线 -->
+	    <div id="sliderProgressBar" class="mui-slider-progress-bar mui-col-xs-6" ></div>
+		<div class="mui-slider-group">
+			<div id="item1mobile" class="mui-slider-item mui-control-content mui-active">
+				<div id="scroll1" class="mui-scroll-wrapper">
+					<div class="mui-scroll">
+						<ul class="mui-table-view" id="list"></ul>
+					</div>
+				</div>
+			</div>
+			<div id="item2mobile" class="mui-slider-item mui-control-content">
+				<div class="mui-scroll-wrapper">
+					<div class="mui-scroll">
+						<ul class="mui-table-view" id="list2"></ul>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<script src="../js/mui.min.js"></script>
+<script src="../js/mui.pullToRefresh.js"></script>
+<script src="../js/mui.pullToRefresh.material.js"></script>
+<script src="../js/common.js"></script>
+<script>
+	mui.init();
+	var pageIndex=0;
+	var pageTotal=1;
+	var pageSize=10;
+	var that = null;
+	var isOver=false;
+	var noOrYes=0;//用于判断会议已开还是未开 =0是未开，=1是已开
+	window.parent.document.getElementById("title").innerHTML="我的会议";
+	(function($, doc) {
+		//退出登录
+		window.parent.document.getElementById("signOut").addEventListener("click",function(){
+			//清空localStorage信息
+			//window.localStorage.removeItem("a");
+				localStorage.setItem('Ticket',"");
+				localStorage.setItem('MaxTicket',"");
+				localStorage.setItem('username',"");
+		
+				//var signOutBtn = window.parent.document.getElementById("signOut");
+				//signOutBtn.href="../login.html";
+				window.parent.location.href="../login.html";
+		})
+	}(mui, document));
+	(function($) {
+		//阻尼系数  系数越小滑动越灵敏
+		var deceleration = mui.os.ios?0.003:0.0009;
+		$('.mui-scroll-wrapper').scroll({
+			bounce: false,
+			indicators: true, //是否显示滚动条
+			deceleration:deceleration
+		});
+		
+		$.ready(function() {
+			//循环初始化所有下拉刷新，上拉加载。
+			$.each(document.querySelectorAll('.mui-slider-group .mui-scroll'), function(index, pullRefreshEl) {
+				$(pullRefreshEl).pullToRefresh({
+					down: {
+						callback: function() {
+							var self = this;
+							setTimeout(function() {
+								//var ul = self.element.querySelector('.mui-table-view');
+								//ul.insertBefore(createFragment(ul, index, 10, true), ul.firstChild);
+								isOver=true;
+								myMeeting(isOver);
+								self.endPullDownToRefresh();
+							}, 1000);
+						}
+					},
+					up: {
+						callback: function() {
+							var self = this;
+							setTimeout(function() {
+								//var ul = self.element.querySelector('.mui-table-view');
+								//ul.appendChild(createFragment(ul, index, 5));
+								isOver=true;
+								myMeeting(isOver);
+								self.endPullUpToRefresh();
+							}, 1000);
+						}
+					}
+				});
+			});
+		});
+		//为了确定滑动的是哪个选项
+		document.querySelector('.mui-slider').addEventListener('slide', function(event) {//滑动切换选项卡
+		   pageIndex =0;//重新赋值
+		   noOrYes = event.detail.slideNumber; 
+		   myMeeting();
+		}); 
+	})(mui);
+	
+	 myMeeting();	
+	function myMeeting(isScroll){//我的预约
+	   if (!that) {
+		   that = this;
+	   }
+	   if(!isScroll){
+			if(noOrYes==0){
+				document.getElementById("list").innerHTML="";
+				//pullToRefresh.setStopped(false);//开启上拉组件
+				//pullToRefresh.refresh(true); //上拉的操作，如果无更多信息后，调用结束上拉并且传true会禁用上拉。如果需要重新开启上拉，则需要刷新组件。
+			}else{
+				document.getElementById("list2").innerHTML="";
+				//pullToRefresh2.setStopped(false);//开启上拉组件
+				//pullToRefresh2.refresh(true); //上拉的操作
+			} 
+		   pageIndex=0;
+	   }	
+	   
+		if(pageIndex<pageTotal){
+			pageIndex = pageIndex+1;
+			var orderQuery={
+				roomName:"",
+				status:noOrYes,//0=未结束的，=1一结束的
+				pageSize:"",//默认是20条
+				page:pageIndex
+			};
+			if (!that) {
+				that = this;
+			}
+	     var table=document.getElementById("list");
+	     var table2=document.getElementById("list2");
+		    mui.ajax(baseURL+"api/order/getmeeting",{
+			   headers:{
+				 Authorization:"Bearer "+localStorage.Ticket
+			   },		
+			   dataType:"json",
+			   type:"GET",
+			   timeout:10000,
+			   data:orderQuery,
+			   success:function(data){
+				//var order="";
+				 var roomColorStr = "";//会议室状态颜色值
+				 var mtColorStr = "";//会议状态颜色值
+				 if(data.code=="0"){//访问成功
+				    if(data.data.data.length!=0){
+						var pageCount=data.data.pageCount;
+						pageTotal=pageCount;//
+						var data = data.data.data;
+						for (var i = 0; i < data.length; i++) {
+							 var rStatus = data[i].RoomStatus;//会议室审批状态
+							 var status = data[i].Status;//会议审核状态
+							 var title = data[i].Title//会议主题
+							 var roomImg = data[i].Picture;//会议室图片
+							 if(roomImg==""){
+							    roomImg="../images/default.jpg";
+							 }
+							 if (status == "0") {
+								status = "会议未审核";
+								mtColorStr= "";
+							 } else if (status == "1") {
+								status = "会议审核通过";
+								 mtColorStr= "";
+							 } else if(status == "11"){
+								 status = "会议审核通过";
+								 mtColorStr= "";
+							 } else if (status == "2") {
+								status = "会议审核不通过";
+								mtColorStr= "red";
+							 } else if (status == "12") {
+								status = "会议审核不通过";
+								mtColorStr= "red";
+							 }  else if(status == "99"){
+								 status = "会议取消";
+								  mtColorStr= "red";
+							 }	
+							 if(rStatus=="0"){ //判断会议室状态
+								  rStatus= "未选择会议室";
+								     roomColorStr = "#a701f9";   
+							  }else if(rStatus=="1"){
+								  rStatus="会议室待审批";
+								   roomColorStr = "orange";
+							  }else if(rStatus=="2"){
+								  rStatue="会议室审批中";
+								   roomColorStr = "#f1ba54";
+							  }else if(rStatus=="3"){
+								  //不需要审批,预约审核通过
+								   rStatue= "会议室审批通过";
+								     roomColorStr = "";
+							  }else if(rStatus=="4"){
+								  rStatue="会议室审批未通过";
+								   roomColorStr = "red";
+							  } else if(rStatue=="99"){
+								  rStatue="会议取消";//
+								    roomColorStr = "red";
+							  }
+							  if(title.length>17){
+								  title = title.substr(0,16)+"...";
+							  }		  
+							 var startTime = (data[i].StartTime).replace('-', '/');//开始时间
+							 startTime = new Date(Date.parse(startTime));
+							 var endTime = (data[i].Endtime).replace('-', '/');//结束时间
+							 endTime = new Date(Date.parse(endTime));
+							 var hstart = addZero(startTime.getHours(), 2, 0);
+							 var mstrat = addZero(startTime.getMinutes(), 2, 0);
+							 var hend = addZero(endTime.getHours(), 2, 0);
+							 var mend = addZero(endTime.getMinutes(), 2, 0); 
+							 var li = document.createElement('li');
+							 li.className = 'dataList mui-table-view-cell';
+							 li.innerHTML ="<img src='"+roomImg+"' onerror='defaultPic(this)'/><ul class='right'><li class='size'>主题："+title+"</li><li class='address'>地点："+data[i].RoomName+"</li><li class='time'>时间：<span>"+(data[i].StartTime).split(" ")[0]+"</span>&nbsp;&nbsp;<span>" + hstart + ":" + mstrat + "-" + hend + ":" + mend + "</span></li><li class='status'><span style='color:"+mtColorStr+"'>"+status+"</span><span style='color:"+roomColorStr+";margin-left:15px;'>"+rStatue+"</span></li></ul>";
+							if(noOrYes==0){
+								table.appendChild(li);
+							}else{
+								table2.appendChild(li);	
+							}
+						}	
+					}else{//无数据
+						if(noOrYes==0){
+							table.innerHTML="<img src='../images/no.png' id='free'/><div id='free2'>～暂时没有未开的会议</div>";
+						}else{
+							table2.innerHTML="<img src='../images/no.png' id='free'/><div id='free2'>～暂时没有已开会议</div>";
+						}
+					}						 
+				  }else if(data.code=="30006"){//短token授权已过期/无效
+					 getMaxTicket();
+				  }else if(data.code=="30001"){//无权限
+					window.location.href="../login.html";
+				  }else if(data.code=="30002"){
+					 // alert("系统错误");
+				  }else{
+					window.location.href="../login.html";
+				  } 
+			   },
+			   error:function(){
+				
+			   }
+		    })
+		}else{
+		  isOver = false;	
+		  setTimeout(function(){
+		  	 mui.toast('暂时没有更多了');
+		  },1000);
+		}				
+	} 
+	function defaultPic(thisImg){
+		thisImg.setAttribute("src","../images/default.jpg");
+	}
+</script>
+</body>
+</html>

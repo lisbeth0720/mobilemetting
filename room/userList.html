@@ -1,0 +1,669 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" type="text/css" href="../css/mui.picker.min.css" />
+		<link href="../css/style.css" rel="stylesheet" />
+		<link href="../css/icons-extra.css" rel="stylesheet" />
+		<style>
+			.mui-off-canvas-left, .mui-off-canvas-right{
+				background:#fff;
+			}
+			.mui-card{
+				margin:0;
+			}
+			#selectUserTitle{
+				background:#fff;
+				padding: 10px;    
+				border-bottom: 1px solid #aaa;
+			}
+			
+			.mui-table-view-cell.mui-active{
+				background: #fff;
+			}
+			.mui-table-view-cell.mui-checkbox.mui-left, .mui-table-view-cell.mui-radio.mui-left{
+				padding-left: 0px;
+			}
+			.mui-checkbox input[type=checkbox], .mui-radio input[type=radio]{
+				position: unset;
+			}
+			.mui-checkbox.mui-left input[type=checkbox], .mui-radio.mui-left input[type=radio]{
+				float: left;
+			}
+			.mui-checkbox.mui-left label, .mui-radio.mui-left label{
+				display: contents;
+			}
+			.mui-table-view-chevron .mui-table-view-cell>a:not(.mui-btn){
+				/* display: contents; */
+				float: left;
+				width: calc(100% - 80px);
+				margin: -7px 0px;
+			}
+			.mui-table-view-chevron .mui-table-view-cell>a:not(.mui-btn).mui-active{
+				margin-left:0px;
+			}
+			.muiTreeDepart{
+				-webkit-transform-style: preserve-3d;
+				transform-style: preserve-3d;
+				padding-right: 65px;
+				position: relative;
+				overflow: hidden;
+				padding: 11px 5px;
+			}
+			.muiTreeDepart a{
+				margin-right: -65px;
+				position: relative;
+				display: block;
+				overflow: hidden;
+				margin: -11px -15px;
+				padding: inherit;
+				white-space: nowrap;
+				text-overflow: ellipsis;
+				color: inherit;
+				float: left;
+				width: calc(100% - 20px);
+				margin-left: 10px;
+			}
+			.mui-icon-extra{
+				display: block;
+				float: left;
+			}
+			.mui-table-view-cell.mui-collapse .mui-table-view{
+				margin-top:30px;
+				margin-bottom: -15px;
+			}
+			.mui-active{
+				margin-left:0px!important;
+				/* padding-left: 31px!important; */
+				
+			}
+			.mui-table-view-chevron .mui-table-view-cell{
+				padding-right: 25px;
+			}
+			.mui-checkbox, .mui-radio{
+				display: block;
+				float: left;
+			}
+			#searchUser{
+				width:calc(100% - 30px);
+				font-size: 10px;
+			}
+			.bottomBtn{
+				margin-top: 10px;
+				text-align: center;
+			}
+			#queryUl{
+				width:90%;
+				margin: auto;
+			}
+			#queryUl li{
+				line-height: 40px;
+			}
+			#queryUl input{
+				margin-right:20px;
+				margin-top:7px;  
+			}
+			.mui-table-view-cell:after{
+				display: none;
+			}
+			.loadingPage{
+				top: 0;
+				width: 100%;
+				height: 100%;
+				background: rgb(167,166,167,0.7);
+				position: fixed;
+				z-index: 10001;
+				overflow: hidden;
+				bottom: 0;
+				display: none;
+			}
+			.mui-spinner{
+				position: absolute;
+				top: 50%;
+				left: 50%;
+			}
+			
+		</style>
+	</head>
+
+	<body>
+		<!--侧滑菜单容器-->
+		<div id="offCanvasWrapper" class="mui-off-canvas-wrap mui-draggable">
+			<!--菜单部分-->
+			<aside id="offCanvasSide" class="mui-off-canvas-right">
+				<div id="offCanvasSideScroll" class="mui-scroll-wrapper">
+					<div class="mui-scroll">
+						<div class="mui-content">
+							
+							<div class="mui-card">
+								<p id="selectUserTitle">
+									<input id="searchUser" type="text" placeholder="输入姓名、手机号、或者部门名称" />
+									<span class="mui-icon mui-icon-search" id="searchBtn"></span>
+									
+								</p>
+								<ul id="userTree" class="mui-table-view mui-table-view-chevron  mui-collapse">									
+								</ul>
+								<div id="selectContent" class="userCOntent">
+									<ul id="queryUl">
+										
+									</ul>
+								</div>
+							</div>
+					</div>
+					<div class="bottomBtn">
+						<button type="button" class="commSubmitBtn" id="resetBtn">
+							重置
+						</button>
+						<button type="button" class="commSubmitBtn activeBtn" id="submitBtn">
+							确认
+						</button>
+					</div>
+				</div>
+				
+			</aside>
+			<div id="oderContent" class="mui-inner-wrap mui-iframe-wrapper mui-control-content mui-active">
+				<!-- 使用iframe可以避免上拉加载和左滑冲突的问题 -->
+				<iframe src="order.html" id="iframeList"></iframe>
+				<!-- 左滑可避免左边底层区域误点 -->
+				<div class="mui-off-canvas-backdrop" id="backdrop"></div>
+			</div>
+			<div class="loadingPage">
+				<span class="mui-spinner"></span>
+			</div>
+		</div>
+		<script src="../js/mui.js"></script>
+		<script src="../js/mui.enterfocus.js"></script>
+		<script src="../js/app.js"></script>
+		<script src="../js/common.js"></script>
+		<script type="text/javascript">
+			mui.init()
+			
+			var _iframe = document.getElementById('iframeList').contentWindow;
+			document.getElementById("searchUser").value="";
+			var manListArr=new Array();
+			var allInfoArr=new Array();
+			var manList=_iframe.document.getElementById("manList");//获取父页面的元素
+			var roomid=window.location.href.split("id=")[1];
+			
+			document.getElementsByTagName("iframe")[0].setAttribute("src","order.html?id="+roomid);
+			_iframe.roomid=roomid;
+		
+			console.log(parent.userPicker);
+			//mui("#selectUserTitle").on('')
+			(function($,doc){
+				$("#selectUserTitle").on("tap","#searchBtn",function(){
+					var userName=this.previousElementSibling.value;
+					if(userName==""){
+						getUserList();
+					}else{
+						queryUser(userName);
+					}
+					//输入姓名、手机号、或者部门名称搜索
+					//搜索函数
+				})
+				var retBtn=document.getElementById("resetBtn");
+				var submitBtn=document.getElementById("submitBtn");
+				retBtn.addEventListener('tap', function() {	
+	
+					getUserList();
+					manListArr=[];
+					allInfoArr=[];
+				})
+				submitBtn.addEventListener('tap', function() {
+					submitFun();
+					//关闭侧滑页面并执行搜索的函数
+					offCanvasWrapper.offCanvas('close');
+				})
+				//监听侧滑关闭事件，关闭时自动保存当前选中的人员
+				var closeCanvas=document.getElementById("backdrop");
+				closeCanvas.addEventListener('tap', function() {
+	                //阻止默认事件
+	               event.detail.gesture.preventDefault();
+					submitFun();
+	            });
+			}(mui, document))
+			/*-------------------------------侧滑导航栏-----------------------------------------*/
+			//侧滑容器父节点
+			var offCanvasWrapper = mui('#offCanvasWrapper');
+			 //主界面容器
+			var offCanvasInner =offCanvasWrapper[0].querySelector('#roomList');
+			 //菜单容器
+			var offCanvasSide = document.getElementById("offCanvasSide");
+			var classList = offCanvasWrapper[0].classList;
+			 //移动效果是否为整体移动
+			var moveTogether = false;
+			 //侧滑容器的class列表，增加.mui-slide-in即可实现菜单移动、主界面不动的效果
+			 offCanvasSide.classList.remove('mui-transitioning');
+			 offCanvasSide.setAttribute('style', '');
+			 classList.remove('mui-slide-in');
+			 classList.remove('mui-scalable');
+			 classList.add('mui-slide-in');
+			 offCanvasWrapper.offCanvas().refresh();
+			 mui('#offCanvasSideScroll').scroll(); 
+			 mui('#offCanvasContentScroll').scroll();
+			
+			 //变换侧滑动画移动效果；
+			setTimeout(function(){
+				var _div =_iframe.document.getElementById('selectMeetingMember');
+				_div.addEventListener('tap', function() {
+					//debugger;
+					//var loadingShadow=document.getElementsByTagName("iframe")[0].contentDocument.getElementsByClassName("loadingPage")[0];
+					var loadingShadow=document.getElementsByClassName("loadingPage")[0];
+					loadingShadow.style.display="block";
+					//(loadingShadow.style.display);
+					offCanvasWrapper.offCanvas('show');
+					document.getElementById("userTree").innerHTML="";
+					
+					getUserList();
+					// setTimeout(function(){
+					// 	loadingShadow.style.display="none";
+					// },2000)
+					
+				})
+			},200); 
+			
+			
+			//实现ios平台的侧滑关闭页面；
+			if (mui.os.plus && mui.os.ios) {
+				offCanvasWrapper[0].addEventListener('shown', function(e) { //菜单显示完成事件
+					plus.webview.currentWebview().setStyle({
+						'popGesture': 'none'
+					});
+				});
+				offCanvasWrapper[0].addEventListener('hidden', function(e) { //菜单关闭完成事件
+					plus.webview.currentWebview().setStyle({
+						'popGesture': 'close'
+					});
+				});
+			}
+			/*---------------------------------侧滑导航栏-----------------------------------------*/
+			function queryUser(param){
+				document.getElementById("userTree").style.display="none";
+				document.getElementById("selectContent").style.display="block";
+				document.getElementById("queryUl").innerHTML="";
+				mui.ajax(baseURL+'api/users/getuserlist',{
+					dataType:"json",
+					type:"get",
+					data:{
+						param:param
+					},
+					async:false,
+					timeout:10000,
+					headers:{
+						"Authorization":TicketStr
+					},success:function(data){
+						if(data.code=="0"){
+							var dataList=data.data;
+							for(var i=0;i<dataList.length;i++){
+								var pdepartID=dataList[i].pdeptID;
+								var email=dataList[i].email;
+								var fullname=dataList[i].fullname;
+								var tel=dataList[i].tel;
+								var userID=dataList[i].userID;
+								var username=dataList[i].username;
+								var userlevel=dataList[i].UserLevel
+								var table=document.getElementById("queryUl");
+								var li=document.createElement("li");
+								var booleCheck=false;
+								li.className="mui-input-row mui-checkbox mui-left";
+								
+								setAttribute(li,{'pdepartID':pdepartID,'email':email,'fullname':fullname,'tel':tel,'userID':userID,'username':username,"userlevel":userlevel});
+								
+								li.innerHTML = '<label>'+fullname+'</label><input name="checkbox" value="Item 2" type="checkbox">';
+								table.appendChild(li);
+								for(var j=0;j<manListArr.length;j++){
+									var userid=manListArr[j];
+									if(userid==userID){
+										li.getElementsByTagName("input")[0].checked=true
+									}
+								}	
+								
+							}
+							queryBoxChecked();
+						}else if(data.code=="30001"){//无效token、无权限
+							top.location.href="../login.html";
+						}else if(data.code=="30006"){
+							getMaxTicket();
+						}else{
+							mui.toast(data.message);
+						}
+					},error:function(err){
+						console.log(err);
+					}
+				})
+			}
+			function getUserList(username){
+				document.getElementById("userTree").style.display="block";
+				document.getElementById("selectContent").style.display="none";
+				document.getElementById("userTree").innerHTML="";
+				mui.ajax(baseURL+'api/users/getuserList',{
+					dataType:'json',
+					type:'get',
+					async:false,
+					timeout:10000,
+					headers:{
+						"Authorization":TicketStr
+					},success:function(data){
+						if(data.code=="0"){
+							if(data.data!=""){
+								var companyArr=data.data;
+								var table=document.getElementById("userTree");
+								getDepart(table,companyArr);
+							}	
+							//给每个checkbox注册change事件
+							//checkUserEvent();
+							//将之前已经选择的选中
+							setTimeout(function(){
+								selectUser();
+								var loadingShadow=document.getElementsByClassName("loadingPage")[0];
+								loadingShadow.style.display="none";
+							},200)
+							
+						}else if(data.code=="30001"){//无效token、无权限
+							top.location.href="../login.html";
+						}else if(data.code=="30006"){
+							getMaxTicket();
+						}else{
+							mui.toast(data.message);
+						}
+						
+						// var loadingShadow=document.getElementsByTagName("iframe")[0].contentDocument.getElementsByClassName("loadingPage")[0];
+						 
+					},error:function(err){
+						console.log(err);
+					}
+				})	
+			}
+			var departLine=0;
+			//生成组织树形结构
+			function getDepart(table,arr){
+				departLine++;
+				
+				if(arr.length!=0){
+					for(var i=0;i<arr.length;i++){
+						var departName=arr[i].deptName;
+						var userArr=arr[i].userLists;
+						var nextArr=arr[i].deptLists;
+						var li=document.createElement('li');
+						li.className = 'mui-table-view-cell mui-collapse';
+						setAttribute(li,{'pdepartID':arr[i].pdeptID,'departID':arr[i].deptID});
+						
+						li.innerHTML = '<span class="mui-checkbox mui-left"><input name="checkbox" type="checkbox" onchange="checkUserEvent(this)"/></span><a class="mui-navigate-right">'+departName+'</a>';
+						table.appendChild(li);
+						if(userArr!=undefined&&userArr.length!=0){
+							var ul=document.createElement('ul');
+							ul.className='mui-table-view mui-table-view-chevron';
+							li.appendChild(ul);
+							getUser(ul,userArr);//生成叶子结点
+						}
+						if(nextArr.length!=0){
+							var ul=document.createElement('ul');
+							ul.className='mui-table-view mui-table-view-chevron';
+							ul.style.marginTop="10px";
+							
+							li.appendChild(ul);
+							
+							if(ul.previousElementSibling.classList.value.indexOf("mui-table-view-chevron")>=0){
+								ul.style.marginTop="10px";	
+							}else{
+								ul.style.marginTop="30px";	
+							}
+							
+							//if(li.previousSibling())
+							getDepart(ul,nextArr);//递归调用生成根节点
+						}
+					}
+				}
+			}
+			//组织树中的叶子结点
+			function getUser(table,arr){
+				if(arr.length!=0){
+					for(var i=0;i<arr.length;i++){
+						var fullname=arr[i].fullname;
+						var li=document.createElement('li');
+						li.onclick=function(){
+							getUserInfo(this);
+						}
+						li.className = 'mui-table-view-cell';
+						setAttribute(li,{'pdepartID':arr[i].pdeptID,'email':arr[i].email,'fullname':arr[i].fullname,'tel':arr[i].tel,'userID':arr[i].userID,'username':arr[i].username,"userlevel":arr[i].UserLevel});
+						li.innerHTML = '<span class="mui-checkbox mui-left"><input name="checkbox" type="checkbox" onchange="checkUserEvent(this)"/></span><a>'+fullname+'</a>';
+						table.appendChild(li);
+					}
+				}
+			}
+			function getUserInfo(thisItem){
+				//console.log(thisItem.text);
+			}
+			function checkUserEvent(thisItem){
+				debugger;
+				//mui("#userTree").on("change","input",function(){
+					
+					var value = thisItem.checked?true:false;
+					var parent=thisItem.parentNode.parentNode;
+					var input=parent.getElementsByClassName("mui-table-view-cell");
+				
+					if(parent.getAttribute("departid")!=undefined){//说明选中的是部门
+						
+						for(var i=0;i<input.length;i++){
+							var moreInfoObj=new Object();
+							input[i].getElementsByTagName("input")[0].checked=value;
+							var userId=input[i].getAttribute("userid");
+							var userEmail=input[i].getAttribute("email");
+							var userTel=input[i].getAttribute("tel");
+							var userName=input[i].getAttribute("username");
+							var fullname=input[i].getAttribute("fullname");
+							var userlevel=input[i].getAttribute("userlevel");
+							var tel=input[i].getAttribute("tel");
+							moreInfoObj.userID=userId;
+							moreInfoObj.fullname=fullname;
+							moreInfoObj.userlevel=userlevel;
+							moreInfoObj.SeatCode="0";
+							moreInfoObj.tel=userTel;
+							if(value){
+								if(manListArr.includes(userId)){
+								}else{
+									if(userId!=null){//null为部门，不加入数组中
+										manListArr.push(userId);
+										allInfoArr.push(moreInfoObj);
+									}	
+								}
+							}else{
+								manListArr.remove(userId);
+								for(var k=0;k<allInfoArr.length;k++){
+									if(allInfoArr[k].userID==userId){
+										allInfoArr.splice(k,1);
+									}
+								}
+								//allInfoArr.remove(moreInfoObj);
+							}
+							
+						}
+					}else{
+						var moreInfoObj=new Object();
+						var userId=parent.getAttribute("userid");
+						var userEmail=parent.getAttribute("email");
+						var userTel=parent.getAttribute("tel");
+						var userName=parent.getAttribute("username");
+						var fullname=parent.getAttribute("fullname");
+						var userlevel=parent.getAttribute("userlevel");
+						moreInfoObj.userID=userId;
+						moreInfoObj.fullname=fullname;
+						
+						moreInfoObj.userlevel=userlevel;
+						moreInfoObj.SeatCode="0";
+						moreInfoObj.tel=userTel;
+						if(value){
+							if(manListArr.includes(userId)){
+							}else{
+								manListArr.push(userId);
+								allInfoArr.push(moreInfoObj);
+							}
+						}else{			
+							manListArr.remove(userId);
+							for(var h=0;h<allInfoArr.length;h++){
+								if(allInfoArr[h].userID==userId){
+									allInfoArr.splice(h,1);
+								}
+							}
+						}
+					}
+					var pid=parent.getAttribute("pdepartid");
+					var userList=document.querySelectorAll("li[pdepartid='"+pid+"']");//所属部门的id
+					var sameCount=0;//用于计数,判断是否当前部门下的人员全部被选中
+					
+					//console.log(userList.length)
+					// if(pid=="1"){
+					// 	console.log(sameCount+1);
+					// }
+					if(pid!="0"){
+						if(!value){
+							document.querySelector("li[departid='"+pid+"']").getElementsByTagName("input")[0].checked=value;
+						}else{
+							for(var j=0;j<userList.length;j++){
+								
+								if(userList[j].getElementsByTagName("input")[0].checked!=value){
+									//return false;
+								}else{
+									sameCount++;
+									if(sameCount==userList.length){
+										document.querySelector("li[departid='"+pid+"']").getElementsByTagName("input")[0].checked=value;
+										console.log(sameCount);
+									}
+								}		
+							}
+						}	
+					}
+					
+					if(document.getElementById("userTree").querySelectorAll("li[userid]").length==manListArr.length){
+						
+						document.querySelector("li").getElementsByTagName("input")[0].checked=value;
+					}
+					
+				//})
+				
+			}
+			//选中搜索的人
+			var tempCheckedArr=[];
+			function queryBoxChecked(){
+				
+				mui("#queryUl").on("change","input",function(){
+					var value = this.checked?true:false;
+					var parent=this.parentNode;
+					var moreInfoObj=new Object();
+					//选中，则保持当前的状态和属性的相同id的状态相同
+					var treeUl=document.getElementById("userTree");
+					var userId=parent.getAttribute("userid");
+					var userEmail=parent.getAttribute("email");
+					var userTel=parent.getAttribute("tel");
+					var userName=parent.getAttribute("username");
+					var fullname=parent.getAttribute("fullname");
+					var userlevel=parent.getAttribute("userlevel");
+					moreInfoObj.userID=userId;
+					moreInfoObj.fullname=fullname;
+					
+					moreInfoObj.userlevel=userlevel;
+					moreInfoObj.SeatCode="0";
+					moreInfoObj.tel=userTel;
+					if(value){
+						if(manListArr.includes(userId)){
+						}else{
+							manListArr.push(userId);
+							allInfoArr.push(moreInfoObj);
+						}
+					}else{			
+						manListArr.remove(userId);
+						for(var h=0;h<allInfoArr.length;h++){
+							if(allInfoArr[h].userID==userId){
+								allInfoArr.splice(h,1);
+							}
+						}
+					}
+					console.log(manListArr);
+				})
+			}
+			//将之前选择的选中
+			function selectUser(){
+				
+				//每次打开回到最顶部
+				mui('#offCanvasSideScroll').scroll().scrollTo(0, 0)
+				var queryLi=document.querySelector("li");
+				//当不是第一次选择时，将之前的选中，并将列表展开
+				queryLi.classList.add("mui-active");
+				//var eleArr=_iframe.getElemen
+				var userThisArr=[];
+				allInfoArr=[];
+				//userThisArr=_iframe.userListArr;
+				if(allInfoArr.length>0){
+					//userThisArr=allInfoArr;
+					//manListArr=allInfoArr;
+					userThisArr=manListArr;
+				}else{
+					//userThisArr=_iframe.userListArr;
+					if(_iframe.document.getElementById("manList").value!=""){
+						if(_iframe.document.getElementById("manList").value.indexOf(",")>=0){
+							userThisArr=_iframe.document.getElementById("manList").value.split(",")
+						}else{
+							userThisArr.push(_iframe.document.getElementById("manList").value);
+						}
+					}
+					
+				}
+				if(userThisArr.length>0){	
+					for(var i=0;i<userThisArr.length;i++){
+						//var userid=userThisArr[i].userID;
+						var userid=userThisArr[i];
+						document.querySelector("li[userID='"+userid+"']").getElementsByTagName("input")[0].click();
+					}	
+				}
+				if(_iframe.document.getElementById("notJoin").checked){
+					if(!document.querySelector("li[userID='"+loginInfo.data.userid+"']").getElementsByTagName("input")[0].checked){
+						document.querySelector("li[userID='"+
+						loginInfo.data.userid+"']").getElementsByTagName("input")[0].click();
+					}	
+				}else{
+					if(document.querySelector("li[userID='"+loginInfo.data.userid+"']").getElementsByTagName("input")[0].checked){
+						document.querySelector("li[userID='"+
+						loginInfo.data.userid+"']").getElementsByTagName("input")[0].click();
+					}	
+				}
+				
+			}
+			//点完提交按钮执行的shijian
+			function submitFun(){
+				var newArr=[];//声明变量存储选择选择的人员，方便选择主持人
+				debugger;
+				if(manListArr.length>0){
+					_iframe.document.getElementById("manList").value=manListArr.join(",");
+					for(var k=0;k<allInfoArr.length;k++){
+						newArr.push({
+							value:allInfoArr[k],
+							text:allInfoArr[k].fullname
+						})
+					}
+					
+				}else{
+					_iframe.document.getElementById("manList").value=manListArr;
+				
+				}  
+				_iframe.document.getElementById("allInfo").value=allInfoArr;
+				_iframe.userListArr=allInfoArr;
+				_iframe.document.getElementById("selectCount").innerText=manListArr.length;
+			   //向一级选择其中添加数组
+			    _iframe.userPicker.setData(newArr);
+				if(manListArr.indexOf(_iframe.mineJoinObj.userID)>=0){
+					
+					_iframe.document.getElementById("notJoin").checked=true;
+				}else{
+					
+					_iframe.document.getElementById("notJoin").checked=false;
+				}	
+				
+			}
+		</script>
+	</body>
+
+</html>

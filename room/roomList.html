@@ -1,0 +1,537 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../css/mui.min.css" rel="stylesheet" />		
+		<link rel="stylesheet" type="text/css" href="../css/mui.picker.min.css" />
+		<link href="../css/style.css" rel="stylesheet" />
+		<style>
+			.mui-media-body{
+				
+				margin-left: 10px;
+				padding-left:10px;
+			}
+			.mui-pull-bottom-tips {
+			    text-align: center;
+			    background-color: #efeff4;
+			    font-size: 15px;
+			    line-height: 40px;
+			    color: #777;
+			}
+			.mui-pull-top-tips {
+				position: absolute;
+				top: -20px;
+				left: 50%;
+				margin-left: -25px;
+				width: 40px;
+				height: 40px;
+				border-radius: 100%;
+				z-index: 1;
+			}
+			.mui-bar~.mui-pull-top-tips {
+				top: 24px;
+			}
+			.mui-pull-top-wrapper {
+				width: 42px;
+				height: 42px;
+				display: block;
+				text-align: center;
+				background-color: #efeff4;
+				border: 1px solid #ddd;
+				border-radius: 25px;
+				background-clip: padding-box;
+				box-shadow: 0 4px 10px #bbb;
+				overflow: hidden;
+			}
+			.mui-pull-top-tips.mui-transitioning {
+				-webkit-transition-duration: 200ms;
+				transition-duration: 200ms;
+			}
+			.mui-pull-top-tips .mui-pull-loading {
+			
+				margin: 0;
+			}
+			.mui-pull-top-wrapper .mui-icon,
+			.mui-pull-top-wrapper .mui-spinner {
+				margin-top: 7px;
+			}
+			.mui-slider{
+				height:100px;
+			}
+			.selectContent p{
+				margin-top: 10px;
+				background: #fff;
+				text-align: right;
+				padding-right: 10px;
+				line-height: 30px;
+			}
+			.mui-off-canvas-right {
+				color: #fff;
+			}
+			.title {
+				margin: 35px 15px 10px;
+			}
+			.title+.content {
+				margin: 10px 15px 35px;
+				color: #bbb;
+				text-indent: 1em;
+				font-size: 14px;
+				line-height: 24px;
+			}
+			h5.mui-content-padded:first-child {
+				margin-top: 12px !important;
+			}
+			.mui-btn {
+				font-size: 16px;
+				padding: 8px;
+				margin: 3px;
+			}
+			.ui-alert {
+				text-align: center;
+				padding: 20px 10px;
+				font-size: 16px;
+			}
+			* {
+				touch-action: pan-y;
+				-webkit-touch-callout: none;
+				-webkit-user-select: none;
+			}
+			.mui-off-canvas-wrap.mui-slide-in .mui-off-canvas-right{
+				background:#fff;
+			}
+			.commonTime{
+				height:30px;
+				line-height: 30px;
+				border-top:1px solid #ccc;
+				border-bottom: 1px solid #ccc;
+				margin-top:10px;
+				margin-bottom: 10px;
+			}
+			.commonTime span{
+				display: block;
+				margin:0px 10px;
+			}
+			.commonSelectTime{
+				float: left;
+				margin-left:10px;
+			}
+			.selectBtn{
+				float: right;
+				margin-right: 10px;
+			}
+			.mui-icon{
+				width:20px;
+				float: right;
+				margin: 0!important;
+				margin-top:3px!important;
+				
+			}
+			.leftImg{
+				display: block;
+				width: 42px;
+				height: 66px;
+				float: left;
+			}
+			.mui-table-view-cell>a:not(.mui-btn){
+				white-space:normal;
+			}
+			.mui-table-view .mui-media-object.mui-pull-left{
+				margin-bottom: 5px;
+			}
+			.roomStatus{
+				display: block;
+				width: 100%;
+				height: 20px;
+				text-align: center;
+				overflow: hidden;
+				/* margin-top: 10px; */
+				background: #4398f6;
+				color: #fff;
+				line-height:20px;
+			}
+			.swiperName{
+				line-height: 20px;
+			}
+			.mui-slider .mui-slider-group .mui-slider-item{
+				background: #fff;
+			}
+			.mui-pull-top-canvas {
+				overflow: hidden;
+				background-color: #fafafa;
+				border-radius: 40px;
+				box-shadow: 0 4px 10px #bbb;
+				width: 40px;
+				height: 40px;
+				margin: 0 auto;
+			}
+			.mui-pull-top-canvas canvas {
+				width: 40px;
+			}
+			.mui-slider-indicator.mui-segmented-control {
+				background-color: #efeff4;
+			}
+			.mui-slider .mui-slider-group.mui-slider-loop{
+				height:100%;
+			}
+			#slider a{
+				line-height: 20px;
+			}
+		</style>
+	</head>
+
+	<body ontouchstart> 
+		<div id="roomList">
+			<div id="slider" class="mui-slider" >
+				<div class="mui-slider-group mui-slider-loop mui-table-view" id="swiperList">
+					
+				</div>
+				<div class="mui-slider-indicator">
+					<div class="mui-indicator mui-active"></div>
+					<div class="mui-indicator"></div>
+					<div class="mui-indicator"></div>
+					
+				</div>
+			</div>
+			<div class="selectContent">
+				<!-- <p  id="offCanvasShow">筛选</p> -->
+				<p id="offCanvasShow" style="padding: 5px;">
+					筛选
+				</p>
+			</div>
+			<ul class="mui-table-view mui-content mui-scroll-wrapper" id='roommListUl'>				
+			</ul>
+			
+		</div>
+		<script src="../js/mui.min.js"></script>
+		<script src="../js/mui.enterfocus.js"></script>
+		<script src="../js/app.js"></script>
+		<script src="../js/mui.lazyload.js"></script>
+		<script src="../js/mui.lazyload.img.js"></script>
+		<script src="../js/mui.pullToRefresh.js"></script>
+		<script src="../js/mui.pullToRefresh.material.js"></script>
+		<script src="../js/common.js"></script>
+		<script src="../js/mui.picker.min.js"></script>
+		<script type="text/javascript">
+			
+			var pageIndex=1;
+			var pageTotal=1;
+			var pageSize=20;
+			var that = null;
+			var isOver=false;
+			var parent=window.parent;
+			var pullToRefresh="";
+			getRoomList();
+			getSwiperRoom();
+			
+			/*--------------------------轮播----------------------------*/
+			
+			/*--------------------------轮播----------------------------*/
+			mui.init({
+				swipeBack: false,
+			});
+			window.onload=function(){
+				pullToRefresh = mui("#roomList").pullToRefresh({
+					up: {
+						show: true, //显示底部上拉加载提示信息，可选；  
+						contentinit: '上拉显示更多', //可以上拉提示信息  
+						contentdown: '上拉显示更多', //上拉结束提示信息  
+						contentrefresh : "正在加载...",//可选，正在加载状态时，上拉加载控件上显示的标题内容
+						contentnomore:'没有更多数据了',//可选，请求完毕若没有更多数据时显示的提醒内容；
+						callback: function() {
+							var self = this;
+							isOver=true;
+							getRoomList(isOver);
+							self.endPullUpToRefresh();
+							console.log(this)
+						}
+					}
+					// ,//使用上拉刷新会和滚动冲突，报错但是不会影响功能，当前页面也不需要实时刷新，所以暂时将次功能隐藏
+					// down:{
+					// 	callback: function() {
+					// 		var self = this;
+					// 		setTimeout(function() {
+					// 			var ul = self.element.querySelector('#roommListUl');
+					// 			//ul.appendChild();
+					// 			ul.innerHTML="";
+					// 			pageIndex=1;
+					// 			pageTotal=1;
+					// 			debugger;
+					// 			getRoomList(isOver);
+					// 			self.endPullDownToRefresh();
+					// 		}, 1000);
+					// 	}
+					// }
+				}); 
+				 //给筛选按钮注册点击事件，调用父页面函数
+				document.getElementById("offCanvasShow").addEventListener("click",function(){
+					debugger;
+					var aa=window.parent;
+					aa.btnClick();
+				})
+			}	
+			function getRoomList(isScroll){
+				debugger;
+				var startTime=parent.startTime;
+				var endTime=parent.endTime;
+				var deviceID=parent.deviceID;
+				var peopleCount=parent.peopleCount;
+				//以上变量为调用iframe父页面的变量，为搜索条件
+				if(!that){
+					that=this;
+				}
+				if(!isScroll){
+					document.getElementById("roommListUl").innerHTML="";
+					// pullToRefresh.setStopped(false);//开启上拉组件
+					// pullToRefresh.refresh(true); //上拉的操作，如果无更多信息后，调用结束上拉并且传true会禁用上拉。如果需要重新开启上拉，则需要刷新组件。
+					pageIndex=1;
+				}
+				var roomQuery={
+					roomName:"",
+					startTime:startTime==undefined?"":startTime,
+					endTime:endTime==undefined?"":endTime,
+					sort:"",
+					pageSize:pageSize,
+					page:pageIndex,
+					deviceName:deviceID,
+					contain:peopleCount
+				};
+				if (!that) {
+					that = this;
+				}
+				var table=document.getElementById("roommListUl");
+				mui.ajax(baseURL+'api/room/get?rnd='+Math.random(999)*1000,{
+					data:roomQuery,
+					dataType:'json',
+					type:'get',
+					async:false,
+					timeout:10000,
+					headers:{
+						"Authorization":TicketStr
+					},
+					success:function(data){
+						if(data.code=="0"){
+							var dataList=data.data.data;
+							var pageize=data.data.PageSize;
+							var pageCount=data.data.pageCount;
+								pageTotal=pageCount;
+							if(pageIndex<=pageTotal){
+								pageIndex=pageIndex+1;
+								var str="";
+								
+								for(var i=0;i<dataList.length;i++){
+									var RoomName=dataList[i].RoomName;
+									var Status=dataList[i].Status;
+									var roomContain=dataList[i].Contain;
+									var RoomArea=dataList[i].RoomArea;
+									var Owner=dataList[i].Owner;
+									var OwnerPhone=dataList[i].OwnerPhone;
+									var MeetingAddress=dataList[i].MeetingAddress;
+									var ID=dataList[i].ID;
+									var DeviceCount=dataList[i].DeviceCount;
+									var deviceList=dataList[i].deviceList;
+									var deviceStr="";
+									var roomPic=dataList[i].Picture;
+									if(deviceList.length>0){
+										for(var j=0;j<deviceList.length;j++){
+											var deviceName=deviceList[j].deviceName;
+											var deviceId=deviceList[j].deviceID;
+											deviceStr+="<span class='deviceList'>"+deviceName+"</span>";
+										}
+									}
+									if (Status == "0") {
+										Status = "启用";
+									} else if (Status == "1") {
+										Status = "审核";
+									} else if (Status == "2") {
+										Status = "禁用";
+									} else if (Status == "3") {
+										Status = "维修";
+									} else if (Status == "4") {
+										Status = "预留";
+									}
+									
+									var hrefLink="userList.html?id="+ID;
+									var li = document.createElement('li');
+									li.className = 'mui-table-view-cell mui-media';
+									var roomStr="";
+									//var roomStr=getDeviceRoomList(ID);
+									// onerror='defaultPic(this)
+									li.innerHTML = "<a href1="+hrefLink+" onclick='gotoNewPage(this)'><p class='leftImg'><img class='mui-media-object mui-pull-left' src='"+roomPic+"' onerror='defaultPic(this)'><span class='roomStatus'>"+Status+"</span></p><div class='mui-media-body'>"+RoomName+"<span style='font-size:12px;padding-left:10px;'>坐席"+roomContain+"人</span><p class='mui-ellipsis'><span>会议室地点："+MeetingAddress+"</span></p><p class='mui-ellipsis roomDeviceList'>"+deviceStr+"</p></div></a>"
+									table.appendChild(li);	
+									//getDeviceList(ID);
+								} 
+								
+							}else{
+							
+								isOver = false;//上拉没有更多数据时将变量设置为false
+								pullToRefresh.endPullUpToRefresh(true); //传true代表无更多信息，默认可不传；  
+								pullToRefresh.setStopped(true);//禁用上拉组件
+								setTimeout(function(){
+									 mui.toast('我是有底线的.');
+								 },1000);
+							}	
+								
+						}else if(data.code=="30001"){//无效token、无权限
+							top.location.href="../login.html";
+						}else if(data.code=="30006"){
+							getMaxTicket();
+						}else{
+							mui.toast(data.message);
+						}
+					},error:function(err){
+						console.log(err)
+					}
+				})
+				
+			}
+			//getDeviceRoomList("1")
+			function getDeviceRoomList(roomid){
+				var deviceQuery={
+					roomid:roomid,
+					deviceName:"",
+					type:"",
+					sort:"",
+					pageSize:"100",
+					page:1
+				};
+				var str=""
+				mui.ajax(baseURL+'/api/device/getdeviceList?rnd='+Math.random(999)*1000,{
+					data:deviceQuery,
+					dataType:'json',
+					type:'get',
+					async:false,
+					timeout:10000,
+					headers:{
+						"Authorization":TicketStr
+					},success:function(data){
+						
+						if(data.code=="0"){
+							var dataList=data.data.data;
+							
+							for(var i=0;i<dataList.length;i++){
+								var deviceName=dataList[i].DeviceName;
+								var deviceId=dataList[i].ID;
+								
+								str+="<span class='deviceList'>"+deviceName+"</span>";
+							}
+							//addDeviceTap();
+							
+						}else if(data.code=="30001"){//无效token、无权限
+							window.location.href="../login.html";
+						}else if(data.code=="30006"){//短token无效,获取长token
+							getMaxTicket();
+						}else{
+							mui.toast(data.message);
+						}
+						
+					},error:function(err){
+						console.log(err);
+					}
+				})
+				return str;
+			}
+			function defaultPic(thisImg){
+				
+				thisImg.setAttribute("src","../images/default.jpg");
+			}
+			function getSwiperRoom(){
+				var table=document.getElementById("swiperList");
+				mui.ajax(baseURL+'api/room/getroomList?rnd='+Math.random(999)*1000,{
+					
+					dataType:'json',
+					type:'get',
+					async:false,
+					timeout:10000,
+					headers:{
+						"Authorization":TicketStr
+					},success:function(data){
+						if(data.code=="0"){
+							var dataStr=data.data;
+							var firstRoom='<div class="mui-slider-item mui-slider-item-duplicate"><a href="#"><img src="../images/yuantiao.jpg"></a></div>';
+							var lastRoom='<div class="mui-slider-item mui-slider-item-duplicate"><a href="#"><img src="../images/shuijiao.jpg"></a></div>';
+							if(dataStr.length>0){
+								for(var i=0;i<dataStr.length;i++){
+									
+									var roomID=dataStr[i].roomID;
+									var RoomName=dataStr[i].roomName;
+									var Status=dataStr[i].roomStatus;
+									
+									var roomPic=dataStr[i].roomPic;
+									var roomCount=dataStr[i].roomCount;
+									var remark=dataStr[i].remark;
+									var deviceList=dataStr[i].deviceList;
+									var deviceStr="";
+									var MeetingAddress=dataStr[i].roomAddress;
+									var roomContain=dataStr[i].roomCount;
+									if(deviceList.length>0){
+										for(var j=0;j<deviceList.length;j++){
+											var deviceName=deviceList[j].deviceName;
+											var deviceId=deviceList[j].deviceID;
+											deviceStr+="<span class='deviceList'>"+deviceName+"</span>";
+										}
+									}
+									if (Status == "0") {
+										Status = "启用";
+									} else if (Status == "1") {
+										Status = "审核";
+									} else if (Status == "2") {
+										Status = "禁用";
+									} else if (Status == "3") {
+										Status = "维修";
+									} else if (Status == "4") {
+										Status = "预留";
+									}
+									var hrefLink="userList.html?id="+roomID;
+									var li = document.createElement('li');
+									li.className = 'mui-slider-item mui-table-view-cell mui-media';
+									var roomStr="";
+									
+									
+									li.innerHTML = "<a href="+hrefLink+"><p class='leftImg'><img class='mui-media-object mui-pull-left' src='"+roomPic+"' onerror='defaultPic(this)'><span class='roomStatus'>"+Status+"</span></p><div class='mui-media-body'>"+RoomName+"<span style='font-size:12px;padding-left:10px;'>坐席"+roomContain+"人</span><p class='mui-ellipsis'><span>会议室地点："+MeetingAddress+"</span></p><p class='mui-ellipsis roomDeviceList'>"+deviceStr+"</p></div></a>";
+									if(i==0){
+										var eleLi=document.createElement('li');
+										eleLi.className="mui-table-view-cell mui-media mui-slider-item mui-slider-item-duplicate";
+										eleLi.innerHTML="<a href="+hrefLink+"><p class='leftImg'><img class='mui-media-object mui-pull-left' src='"+roomPic+"' onerror='defaultPic(this)'><span class='roomStatus'>"+Status+"</span></p><div class='mui-media-body'>"+RoomName+"<span style='font-size:12px;padding-left:10px;'>坐席"+roomContain+"人</span><p class='mui-ellipsis'><span>会议室地点："+MeetingAddress+"</span></p><p class='mui-ellipsis roomDeviceList'>"+deviceStr+"</p></div></a>";
+										
+										table.appendChild(eleLi);
+										table.appendChild(li);
+									}else if(i==dataStr.length-1){
+										var eleLi=document.createElement('li');
+										eleLi.className="mui-table-view-cell mui-media mui-slider-item mui-slider-item-duplicate";
+										eleLi.innerHTML="<a href="+hrefLink+"><p class='leftImg'><img class='mui-media-object mui-pull-left' src='"+roomPic+"' onerror='defaultPic(this)'><span class='roomStatus'>"+Status+"</span></p><div class='mui-media-body'>"+RoomName+"<span style='font-size:12px;padding-left:10px;'>坐席"+roomContain+"人</span><p class='mui-ellipsis'><span>会议室地点："+MeetingAddress+"</span></p><p class='mui-ellipsis roomDeviceList'>"+deviceStr+"</p></div></a>";
+										table.appendChild(li);
+										table.appendChild(eleLi);
+										
+									}else{
+										table.appendChild(li);
+										
+									}
+								}
+							}
+							var slider = mui("#slider");
+							var that=null;
+							slider.slider({
+								interval: 5000
+							});
+						}else if(data.code=="30001"){//无效token、无权限	
+							top.location.href="../login.html";
+						}else if(data.code=="30006"){//短token无效,获取长token
+							getMaxTicket();
+						}else{
+							mui.toast(data.message);
+						}
+					},error:function(err){
+						
+					}
+				})
+			}
+			function gotoNewPage(thisItem){
+				window.location.href=thisItem.getAttribute("href1");
+			}
+		</script>
+	</body>
+
+</html>

@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>常用会议室</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../css/mui.min.css" rel="stylesheet" />
+		<style>
+			bady{
+				font-family: '微软雅黑';
+			}
+			#dataList,#roomListUl{
+				/* background:#fff; */
+				width:100%;
+			}
+			
+			*{
+				list-style: none;
+				padding:0;
+				margin:0;
+				/* touch-action: none; */
+			}
+			
+			.dataList{
+				display:block;
+				width:100%;
+				background:#fff;
+				/* margin-bottom:10px; */
+				position:relative;
+				
+			}
+			#dataList #roomListUl .dataList a{
+				display:block;
+				height:120px;
+			}
+			.roomLeft{
+				width:80px;
+				height:90px;
+				/* float: left; */
+				position:absolute;
+				left:15px;
+				top:15px;
+			}
+		   .dataList img{
+			   height:90px;
+			   width:80px;
+			}
+			.roomLeft span{
+				position:absolute;
+				bottom:0;
+				width:80px;
+				left:0;
+				text-align: center;
+				/* left:50%;
+				transform: translate(-50%,0); */
+				background:#1376c5;
+				color:#fff;
+				font-size:12px;
+				border-radius: 4px;;
+			}
+			.dataList ul{
+				position:absolute;
+				left:105px;
+				top:15px;
+				overflow: hidden;
+			}
+			
+			.roomName{
+				 font-size: 18px;
+				 color: rgb(62, 58, 57);
+				 font-weight:600;
+			}
+			.count{
+				font-size: 12px;
+				margin-left:12px;
+				color:#999;	
+			}
+			.address{
+				font-size: 14px;
+				margin:4px 0;
+				color:#666;
+			}
+			.deviceList{
+				font-size: 12px;
+				color:#666;
+				border:1px solid #ccc;
+				margin-right:4px;
+				margin-bottom:4px;
+				padding:0 4px;
+				box-sizing: border-box;
+				float:left;
+			}
+			.mui-pull-bottom-tips .mui-pull-loading{
+				display:block;
+				text-align: center;
+			}	
+			.desc{
+				margin-top:10px;
+				text-align: center;
+				font-size:12px;
+				color:#666;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="dataList">
+		<!-- 	class="mui-scroll" -->
+			<ul class="mui-table-view mui-content mui-scroll-wrapper" id='roomListUl'></ul>
+			 <div class="desc">(只统计常用的前五个会议室)</div>
+		</div>
+		<script src="../js/mui.min.js"></script>
+		<script src="../js/mui.enterfocus.js"></script>
+		<script src="../js/app.js"></script>
+		<script src="../js/mui.pullToRefresh.js"></script>
+		<script src="../js/mui.pullToRefresh.material.js"></script>
+		<script src="../js/common.js"></script>
+		<script type="text/javascript">
+			mui.init();
+			//var list = '';	
+			var pageIndex=0;
+			var pageTotal=1;
+			var pageSize=10;
+			var that = null;
+			var isOver=false;
+			(function($, doc) {
+				//退出登录
+				window.parent.document.getElementById("signOut").addEventListener("click",function(){
+					//清空localStorage信息
+					//window.localStorage.removeItem("a");
+						localStorage.setItem('Ticket',"");
+						localStorage.setItem('MaxTicket',"");
+						localStorage.setItem('username',"");
+				
+						//var signOutBtn = window.parent.document.getElementById("signOut");
+						//signOutBtn.href="../login.html";
+						window.parent.location.href="../login.html";
+				})
+			}(mui, document));
+			window.parent.document.getElementById("title").innerHTML="常用会议室";
+			 //上拉和下拉为何不能同时使用
+			/* var pullDownRefresh = mui("#dataList").pullToRefresh({//下拉刷新
+				down : {
+				   style:'circle',//必选，下拉刷新样式，目前支持原生5+ ‘circle’ 样式
+				   color:'#2BD009', //可选，默认“#2BD009” 下拉刷新控件颜色
+				   height:'50px',//可选,默认50px.下拉刷新控件的高度,
+				   range:'100px', //可选 默认100px,控件可下拉拖拽的范围
+				   offset:'0px', //可选 默认0px,下拉刷新控件的起始位置
+				   auto: true,//可选,默认false.首次加载自动上拉刷新一次
+				   callback :function(){
+						console.log('刷新');
+					}
+				}
+			});  */
+			mui.init({
+				swipeBack: false,
+			});
+			
+			//目前先不用上拉加载
+			/* var pullToRefresh = mui("#dataList").pullToRefresh({//上拉加载
+				up: {
+					show: true, //显示底部上拉加载提示信息，可选；
+					contentinit: '上拉显示更多', //可以上拉提示信息  
+					contentdown: '上拉显示更多', //上拉结束提示信息  
+					contentrefresh : "正在加载...",//可选，正在加载状态时，上拉加载控件上显示的标题内容
+					contentnomore:'没有更多数据了',//可选，请求完毕若没有更多数据时显示的提醒内容；
+					callback: function() {
+						var self = this;
+						isOver=true;
+						getMeetRoom(isOver);
+						self.endPullUpToRefresh();
+					}
+				}
+			});  */
+
+			getMeetRoom();
+		
+			function getMeetRoom(isScroll){//获取常用会议室
+			   if (!that) {
+				  that = this;
+			   }
+			   if(!isScroll){
+				  document.getElementById("roomListUl").innerHTML="";
+			//	  pullToRefresh.setStopped(false);//开启上拉组件
+				//  pullToRefresh.refresh(true); //上拉的操作，如果无更多信息后，调用结束上拉并且传true会禁用上拉。如果需要重新开启上拉，则需要刷新组件。
+				  pageIndex=0;
+				}
+			
+				if(pageIndex<pageTotal){
+					pageIndex=pageIndex+1;
+					var roomQuery={
+						num:"5",//显示常用会议室的前几名
+						//page:pageIndex
+					};
+					if (!that) {
+						that = this;
+					}
+					var table=document.getElementById("roomListUl");
+				
+					//暂未加分页，
+					mui.ajax(baseURL+"api/room/getoftenroom",{
+					   headers:{
+						 Authorization:"Bearer "+localStorage.Ticket
+					   },		
+					   dataType:"json",
+					   type:"GET",
+					   timeout:10000,
+					   data:roomQuery,
+					   success:function(data){
+						 //var list = '';
+						 if(data.code=="0"){//访问成功
+						// var pageCount=data.data.pageCount;
+						//	pageTotal=pageCount;//总页数
+							var data = data.data;
+							for (var i = 0; i < data.length; i++) {
+								 var rStatus = data[i].roomStatus;	
+								//判断会议室状态
+								  if(rStatus=="0"){
+									  rStatus="启用";
+								  }else if(rStatus=="1"){
+									  rStatus="审核";
+								  }else if(rStatus=="2"){
+									  rStatue="禁用";
+								  }else if(rStatus=="3"){
+									  //不需要审批,预约审核通过
+									   rStatue="维修";
+								  }else if(rStatus=="4"){
+									  rStatue="预留"; 
+								  }
+								  else if(rStatue=="99"){
+									  rStatue="会议取消";//
+								  }
+								  var deviceList = getDeviceRoomList(data[i].roomID);//会议室设备
+								/* var roomImg = data[i].Picture;//会议室图片
+								  if(roomImg==""){
+									  roomImg="../images/default.jpg";
+								  } */
+								  var li = document.createElement('li');
+								  li.className = 'mui-table-view-cell mui-media dataList';
+								  li.innerHTML ="<a href='../room/order.html?id="+data[i].roomID+"'><div class='roomLeft'><img src='"+data[i].Picture+"' onerror='defaultPic(this)'/><span>"+rStatus+"</span></div><ul><li><span class='roomName'>"+data[i].roomName+"</span><span class='count'>已使用"+data[i].Count+"次</span></li><li class='address'>会议室地点："+data[i].roomAddress+"</li><li>"+deviceList+"</li></ul></a>";
+								 table.appendChild(li);	
+							}						 
+						  }else if(data.code=="30006"){//短token授权已过期/无效
+							 getMaxTicket();
+						  }else if(data.code=="30001"){//无权限
+							window.location.href="../login.html";
+						  }else if(data.code=="30002"){
+								 alert("系统错误");
+						  }else{
+							window.location.href="../login.html";
+						  } 
+					   },
+					   error:function(){
+						
+					   }
+					})
+				}else{
+					isOver = false;//上拉没有更多数据时将变量设置为false
+					/* pullToRefresh.endPullUpToRefresh(true); //传true代表无更多信息，默认可不传；  
+					pullToRefresh.setStopped(true);//禁用上拉组件
+					setTimeout(function(){
+					   mui.toast('我是有底线的');
+					},1000); */ 
+				}				
+			} 	
+			
+			function getDeviceRoomList(roomid){
+				var deviceQuery={
+					roomid:roomid,
+					deviceName:"",
+					type:"",
+					sort:"",
+					pageSize:"100",
+					page:1
+				};
+				var str=""
+				mui.ajax(baseURL+'/api/device/getdeviceList',{
+					data:deviceQuery,
+					dataType:'json',
+					type:'get',
+					async:false,
+					timeout:10000,
+					headers:{
+						"Authorization":TicketStr
+					},success:function(data){
+						
+						if(data.code=="0"){
+							var dataList=data.data.data;
+							
+							for(var i=0;i<dataList.length;i++){
+								var deviceName=dataList[i].DeviceName;
+								var deviceId=dataList[i].ID;
+								
+								str+="<span class='deviceList'>"+deviceName+"</span>";
+							}
+							//addDeviceTap();
+							
+						}else if(data.code=="30001"){//无效token、无权限
+							window.location.href="../login.html";
+						}else if(data.code=="30006"){//短token无效,获取长token
+							getMaxTicket();
+						}else{
+							window.location.href="../login.html";
+						}
+						
+					},error:function(err){
+						console.log(err);
+					}
+				})
+				return str;
+			}
+			function defaultPic(thisImg){
+				thisImg.setAttribute("src","../images/default.jpg");
+			}
+		</script>
+</body>
+</html>

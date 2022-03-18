@@ -1,0 +1,1155 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" type="text/css" href="../css/mui.picker.min.css" />
+		<link href="../css/mui.poppicker.css" rel="stylesheet" />
+		<link href="../css/style.css" rel="stylesheet" />
+		<style>
+			body{
+				font-size: 14px;;
+			}
+			.mui-media-body{
+				float: left;
+				margin-left: 10px;
+			}
+			.mui-pull-bottom-tips {
+			    text-align: center;
+			    background-color: #efeff4;
+			    font-size: 15px;
+			    line-height: 40px;
+			    color: #777;
+			}
+			.mui-pull-top-tips {
+				position: absolute;
+				top: -20px;
+				left: 50%;
+				margin-left: -25px;
+				width: 40px;
+				height: 40px;
+				border-radius: 100%;
+				z-index: 1;
+			}
+			.mui-bar~.mui-pull-top-tips {
+				top: 24px;
+			}
+			.mui-pull-top-wrapper {
+				width: 42px;
+				height: 42px;
+				display: block;
+				text-align: center;
+				background-color: #efeff4;
+				border: 1px solid #ddd;
+				border-radius: 25px;
+				background-clip: padding-box;
+				box-shadow: 0 4px 10px #bbb;
+				overflow: hidden;
+			}
+			.mui-pull-top-tips.mui-transitioning {
+				-webkit-transition-duration: 200ms;
+				transition-duration: 200ms;
+			}
+			.mui-pull-top-tips .mui-pull-loading {
+				
+				margin: 0;
+			}
+			.mui-slider{
+				height:92px;
+			}
+			.selectContent p{
+				margin-top: 10px;
+				background: #fff;
+				text-align: right;
+				padding-right: 10px;
+				line-height: 30px;
+			}
+			.mui-off-canvas-right {
+				color: #fff;
+			}
+			.title {
+				margin: 35px 15px 10px;
+			}
+			.title+.content {
+				margin: 10px 15px 35px;
+				color: #bbb;
+				text-indent: 1em;
+				font-size: 14px;
+				line-height: 24px;
+			}
+			h5.mui-content-padded:first-child {
+				margin-top: 12px !important;
+			}
+			.mui-btn {
+				font-size: 16px;
+				padding: 8px;
+				margin: 3px;
+			}
+			.ui-alert {
+				text-align: center;
+				padding: 20px 10px;
+				font-size: 16px;
+			}
+			* {
+				-webkit-touch-callout: none;
+				-webkit-user-select: none;
+			}
+			.mui-off-canvas-wrap.mui-slide-in .mui-off-canvas-right{
+				background:#fff;
+			}
+			.commonTime{
+				height:30px;
+				line-height: 30px;
+				border-top:1px solid #ccc;
+				border-bottom: 1px solid #ccc;
+				margin-top:10px;
+				margin-bottom: 10px;
+			}
+			.commonTime span{
+				display: block;
+				margin:0px 10px;
+			}
+			.commonSelectTime{
+				float: left;
+				margin-left:10px;
+			}
+			.selectBtn{
+				float: right;
+				margin-right: 10px;
+				width: 78%;
+				display: block;
+				float: left;
+				font-family: 'Helvetica Neue',Helvetica,sans-serif;
+				line-height: 1.1;
+				float: left;
+				width: 60%;
+				/* padding: 11px 15px; */
+				line-height: 40px;
+			}
+			.mui-icon{
+				width:20px;
+				float: right;
+				margin: 0!important;
+				
+			}
+			.mui-icon-forward{
+				margin-top:8px!important;
+				
+			}
+			.leftImg{
+				display: block;
+				width: 42px;
+				height: 66px;
+				float: left;
+			}
+			.mui-table-view-cell>a:not(.mui-btn){
+				white-space:normal;
+			}
+			.roomStatus{
+				display: block;
+				width: 100%;
+				height: 30px;
+				text-align: center;
+			}
+			#roomContent{
+				margin-bottom: 10px;
+			}
+			#meetingEdit{
+				background: #fff;
+			}
+			#meetingInfo li{
+				border-bottom: 1px solid #c8c7cc;
+				height: 40px;
+				line-height: 40px;
+			}
+			#meetingInfo li input[type="text"]{
+				font-size: 14px;
+			}
+			.mui-input-row label{
+				width:27%;
+			}
+			.mui-input-row label~input, .mui-input-row label~select, .mui-input-row label~textarea{
+				width: 46%;
+				float: left;
+			}
+			#mineMeeting{
+				color: #ababab;
+				float: right;
+			}
+			.selectTimeSpan{
+				width: 27%;
+				display: block;
+				float: left;
+				font-family: 'Helvetica Neue',Helvetica,sans-serif;
+				line-height: 1;
+				float: left;
+				width: 35%;
+				padding: 0 15px;
+				line-height: 40px;
+			}
+			.mui-checkbox, .mui-radio{
+				width: 50%;
+				float: left;
+			}
+			#employMeeting{
+				width: 100%;
+				overflow: auto;
+				white-space: nowrap;
+			}
+			#topTime{
+				width: 100%;
+			}
+			#startTimeBlockUl{
+				width: 100%;
+			}
+			#startTimeBlockUl li{
+				display: inline-block;
+				width: 80px;
+				height: 40px;
+				text-align: center;
+				line-height: 40px;
+			}
+			#endTimeBlockUl li{
+				display: inline-block;
+				width: 80px;
+				height: 40px;
+				text-align: center;
+				line-height: 40px;
+			}
+			#meetingContentBlockUl li{
+				display: inline-block;
+				width: 80px;
+				height: 40px;
+				text-align: center;
+				line-height: 40px;
+			}
+			#meetingContentBlockUl li b{
+				display: block;
+				width: 80%;
+				height: 100%;
+				line-height: 40px;
+				text-align: center;
+				margin: 0 auto;
+				background: #cbc8c8;
+				margin-top:10px;
+			}
+			#submitBtn{
+				text-align: center;
+			}
+			.mui-input-row label{
+				padding:11px 10px;
+			}
+			#selectMeetingMember{
+				color: #fff;
+				background: #0075ff;
+				margin-top: 5px;
+				height: 30px;
+				box-sizing: border-box;
+				width: 100px;
+				margin-right: 20px;
+			}
+			#selectMeetingDevice{
+				color: #fff;
+				background: #0075ff;
+				margin-top: 5px;
+				height: 30px;
+				box-sizing: border-box;
+				width: 100px;
+				margin-right: 20px;
+			}
+			#showUserPicker{
+				float: left;
+				width: 200px;
+				text-align: left;
+				padding: 0;
+				margin: 0;
+			}
+			#meetingInfo b{
+				color:red;
+				font-size: 20px;
+				float: right;
+				margin-right: 10px;
+
+			}
+			#topPopover {
+				position: fixed;
+				top: 16px;
+				right: 6px;
+			}
+			#topPopover .mui-popover-arrow {
+				left: auto;
+				right: 6px;
+			}
+			.mui-popover {
+				height: 300px;
+			}
+			.mui-content {
+				/* padding: 10px; */
+			}
+			.loadingPage{    
+				top: 0;
+				width: 100%;
+				height: 100%;
+				background: rgb(167,166,167,0.7);
+				position: fixed;
+				z-index: 1001;
+				overflow: hidden;
+				bottom: 0;
+				display: none;
+			}
+			.mui-spinner{
+				position: absolute;
+				top: 50%;
+				left: 50%;
+			}
+		</style>
+	</head>
+
+	<body>
+
+		<div id="roomContent">
+			
+			<div class="mui-table-view mui-content mui-scroll-wrapper" id="roomcontentID">
+				
+			</div>	
+		</div>
+		<div id="meetingEdit">
+			<ul id="meetingInfo">
+				<li class="mui-input-row">
+					<div class="mui-input-row">
+						<label>会议主题</label>
+						<input type="text" id="Title" class="mui-input-clear" placeholder="*会议主题必填">
+						<b>*</b>
+					</div>
+				</li>
+				<li>
+					
+					<div class="mui-input-row">
+						<label>申请部门</label>
+						<input type="text" id="deptname" readonly="readonly" value="研发部" placeholder="">
+					</div>
+				</li>
+				<li>
+					<div class="mui-input-row">
+						<label>预约人</label>
+						<input type="text" readonly="readonly" id="username" placeholder="" value="administrator">
+						<label style="color: #ababab;" id="mineMeeting">
+							<input name="notJoin" type="checkbox" id="notJoin" onchange="changeJoin()" value="true" checked="CHECKED">我要参会</label>
+					</div>
+					<p>
+						
+					</p>
+				</li>
+				<li>
+					<div class="mui-input-row">
+						<label>联系人</label>
+						<input type="text" id="Linkman" class="mui-input-clear"  placeholder="*联系人为必填" />
+						<b>*</b>
+					</div>
+					
+				</li>
+				<li>
+					<div class="mui-input-row">
+						<label>联系方式</label>
+						<input type="text" id="LinkPhone" class="mui-input-clear" placeholder="*联系方式为必填">
+						<b>*</b>
+					</div>
+					
+				</li>
+				<li>
+					<div class="mui-input-row">
+						<span class="selectTimeSpan">开始时间</span>
+						<span id='time1' class="selectBtn" align="right" data-options='{}'>
+							选择开始时间
+							<span class="mui-icon mui-icon-forward"></span>
+						</span>		
+					</div>
+					
+				</li>
+				<li>
+					<div class="mui-input-row">
+						<span class="selectTimeSpan">结束时间</span>
+						<span id='time2' class="selectBtn" align="right"data-options='{}'>选择结束时间
+							<span class="mui-icon mui-icon-forward"></span>
+						</span>
+					</div>	
+				</li>
+				<li>
+					<div class="mui-content">
+						<div class="mui-checkbox mui-left">
+							<label>上午</label>
+							<input checked name="checkbox" value="Item 1" type="checkbox" id="selectMorning"\ >
+						</div>
+						<div class="mui-checkbox mui-left">
+							<label>下午</label>
+							<input name="checkbox" value="Item 2" type="checkbox"  id="selectAftorn"/>
+						</div>
+					</div>
+				</li>
+				
+				</li>
+				<li>
+					<div class="mui-input-row">
+						<label>参会人</label>
+						<input type="button" class="orderMeetingCommon" id="selectMeetingMember" value="请选择参会人员" placeholder="请选择参会人" >
+						<span>(<i id="selectCount">1</i>)</span>
+					</div>
+					
+				</li>
+				<li>
+					<div class="mui-input-row">
+						<label>主持人</label>
+						<input id='showUserPicker' class="mui-btn mui-btn-block mui-input-clear" type="text" class="" placeholder="请选择主持人" readonly="readonly" />
+					</div>	
+				</li>
+				<li>
+					<div class="mui-input-row">
+						<label>联系方式</label>
+						<input id="hostPhone" type="text" class="mui-input-clear" placeholder=" "/>
+					</div>
+				</li>
+				<li>
+					<div class="mui-input-row">
+						<label>设备</label>
+						<a href="#middlePopover">
+							<input type="button" class="orderMeetingCommon" id="selectMeetingDevice" value="请选择设备" placeholder="请选择设备" >
+						</a>
+						
+					</div>
+					
+				</li>
+				<li style="height:100px;">
+					<div class="mui-input-row">
+						<label>其他需求</label>
+						<textarea id="specialText" type="text" class="mui-input-clear" placeholder="定制化服务填写" style="width:100%;font-size:14px;padding: 10px;box-sizing: border-box;"></textarea>
+					</div>
+					
+				</li>
+			</ul>
+		</div>
+		<div id="employMeeting">
+			<div id="topTime">
+				<ul id="startTimeBlockUl">
+					
+				</ul>
+				
+			</div>
+			<div id="meetingContent">
+				<ul id="meetingContentBlockUl">
+					
+				</ul>
+			</div>
+			<div id="bottomTime">
+				<ul id="endTimeBlockUl">
+					
+					</ul>
+				</ul>
+			</div>
+		</div>
+		<div id="submitBtn">
+			<button type="button" class="commSubmitBtn activeBtn" id="submitOrderBtn" onclick="submitOrder()">
+				确认
+			</button>
+			<button type="button" class="commSubmitBtn" id="backOrderBtn" onclick="resetOrderPage()">
+				重置
+			</button>
+		
+		</div>
+		
+		<input type="hidden" id="selfJoin" value="">
+		<input type="hidden" id="manList" value="">
+		<input type="hidden" id="allInfo" value="">
+		<div id="middlePopover" class="mui-popover">
+			<div class="mui-popover-arrow"></div>
+			<div class="mui-scroll-wrapper">
+				<div class="mui-scroll">
+					<ul class="mui-table-view" id="deviceList">
+						<li class="mui-table-view-cell">
+							<a href="#">Item1</a>
+						</li>
+						
+					</ul>
+				</div>
+			</div>
+		
+		</div>
+		<div class="loadingPage">
+			<span class="mui-spinner"></span>
+		</div>
+		<script src="../js/mui.js"></script>
+		<script src="../js/common.js"></script>
+		<script src="../js/mui.picker.min.js"></script>
+		<script src="../js/mui.picker.js"></script>
+		<script src="../js/mui.poppicker.js"></script>
+		<script type="text/javascript">
+			var parent=window.parent;
+			var roomid=window.location.href.split("id=")[1];
+			var selfLoginUserId=loginInfo.data.userid;
+			var selfDepart=loginInfo.data.deptID;
+			var deviceListArrChecked=new Array();
+			var userListArr=new Array();
+			var mineJoinObj=new Object();
+			mineJoinObj.userID=loginInfo.data.userid;
+			mineJoinObj.fullname=decodeURI(escape(loginInfo.data.name));
+			mineJoinObj.UserLevel=0;
+			mineJoinObj.SeatCode="0";
+			
+			mineJoinObj.tel=decodeURI(escape(loginInfo.exp));
+			var selfJoinStr=selfLoginUserId;
+			//var selfUserId=document.getElementById("selfJoin").value;
+			
+			mui.init();
+			//一级选择器，用于选择主持人
+			var userPicker = new mui.PopPicker();
+			(function($, doc){
+				//document.getElementById("selfJoin").value=selfUserId;
+				document.getElementById("deptname").value=decodeURI(escape(loginInfo.data.deptName));
+				document.getElementById("username").value=decodeURI(escape(loginInfo.data.username));
+				document.getElementById("Linkman").value=decodeURI(escape(loginInfo.data.name));
+				document.getElementById("LinkPhone").value=decodeURI(escape(loginInfo.exp));
+				document.getElementById("time1").innerText=defaultDate("nextMinuStartMo");
+				document.getElementById("time2").innerText=defaultDate("nextMinuEndtMo");
+				getThisRoom();
+				var result = $('.selectBtn');
+				var btns = $('.selectBtn');
+				btns.each(function(i, btn) {
+					btn.addEventListener('tap', function() {
+						var _self = this;
+						if(_self.picker) {
+							_self.picker.show(function (rs) {
+								result.innerText = '选择结果: ' + rs.text;
+								_self.picker.dispose();
+								_self.picker = null;
+							});
+						} else {
+							this.setAttribute("data-options",getNowDate());
+							var optionsJson = this.getAttribute('data-options') || '{}';
+							var options = JSON.parse(optionsJson);
+							var id = this.getAttribute('id');
+						
+							/*
+							 * 首次显示时实例化组件
+							 * 示例为了简洁，将 options 放在了按钮的 dom 上
+							 * 也可以直接通过代码声明 optinos 用于实例化 DtPicker
+							 */
+							_self.picker = new $.DtPicker(options);
+							_self.picker.show(function(rs) {
+								/*
+								 * rs.value 拼合后的 value
+								 * rs.text 拼合后的 text
+								 * rs.y 年，可以通过 rs.y.vaue 和 rs.y.text 获取值和文本
+								 * rs.m 月，用法同年
+								 * rs.d 日，用法同年
+								 * rs.h 时，用法同年
+								 * rs.i 分（minutes 的第二个字母），用法同年
+								 */
+								if(_self.id=="time1"){
+									var time2=document.getElementById('time2').innerText;
+									if(isNaN(Date.parse(time2))){
+										_self.innerText=rs.text;
+									}else{
+										var time1val=Date.parse(rs.text);
+										var time2val=Date.parse(time2);
+										if(time2val-time1val>(1000*timeSpace*60)){
+											_self.innerText=rs.text;
+										}else{
+											_self.picker.dispose();
+											_self.picker = null;
+											mui.toast("开始时间不能小于最短时间间隔");
+										}
+									}
+									getThisRoom();
+								}else if(_self.id=="time2"){
+									var time1=document.getElementById('time1').innerText;
+									if(isNaN(Date.parse(time1))){
+										_self.innerText=rs.text;
+									}else{
+										var time1val=Date.parse(document.getElementById('time1').innerText);
+										var time2val=Date.parse(rs.text);
+										if(time2val-time1val>(1000*timeSpace*60)){
+											_self.innerText=rs.text;
+										}else{
+											_self.picker.dispose();
+											_self.picker = null;
+											mui.toast("会议时间不能小于最短时间间隔");
+										}
+									}
+									
+								}
+								
+								/* 
+								 * 返回 false 可以阻止选择框的关闭
+								 * return false;
+								 */
+								/*
+								 * 释放组件资源，释放后将将不能再操作组件
+								 * 通常情况下，不需要示放组件，new DtPicker(options) 后，可以一直使用。
+								 * 当前示例，因为内容较多，如不进行资原释放，在某些设备上会较慢。
+								 * 所以每次用完便立即调用 dispose 进行释放，下次用时再创建新实例。
+								 */
+								//_self.picker.dispose();
+								_self.picker = null;
+							});
+						}
+						
+					}, false);
+				});
+				var morningBox=document.querySelector("#selectMorning");
+				var afterNoonBox=document.querySelector("#selectAftorn");
+				var userBtn=document.querySelector("#selectMeetingMember");
+				//弹出选择主持人的选择器
+				var showUserPickerButton = doc.getElementById('showUserPicker');
+				var hostPhone=doc.getElementById('hostPhone');
+				showUserPickerButton.addEventListener('tap', function(event) {
+				
+					var notJoin=document.getElementById("notJoin").checked;
+					var newArr=[];
+					var sameCount=0;
+					if(notJoin){
+						debugger;
+						if(userListArr.length>0){
+							for (var k=0;k<userListArr.length;k++){
+								if(userListArr[k].userID==mineJoinObj.userID){
+									sameCount++;
+								}
+								newArr.push({
+									value:userListArr[k],
+									text:userListArr[k].fullname
+								})
+							}	
+							if(sameCount<=0){
+								newArr.push({
+									value:mineJoinObj,
+									text:mineJoinObj.fullname
+								})
+							}
+						}else{
+							newArr.push({
+								value:mineJoinObj,
+								text:mineJoinObj.fullname
+							})
+						}
+					}else{
+						if(userListArr.length>0){
+							for (var k=0;k<userListArr.length;k++){
+								newArr.push({
+									value:userListArr[k],
+									text:userListArr[k].fullname
+								})
+							}	
+						}
+					}
+					userPicker.setData(newArr);
+					userPicker.show(function(items) {
+						//showUserPickerButton.value=
+						debugger;
+						showUserPickerButton.value=items[0].text;
+						hostPhone.value=(items[0].value).tel;
+						//返回 false 可以阻止选择框的关闭
+						//return false;
+					});
+					// if(document.getElementById("allInfo").value!=""){
+					// 	userPicker.show(function(items) {
+					// 		//showUserPickerButton.value=
+							
+					// 		showUserPickerButton.value=items[0].text;
+					// 		hostPhone.value=(items[0].value).tel;
+					// 		//返回 false 可以阻止选择框的关闭
+					// 		//return false;
+					// 	});
+					// }else{
+						
+					// }
+				}, false);
+				getRoomDeviceList();
+			}(mui, document));	
+			mui('.mui-content').on('change', 'input', function() {
+				
+				var value = this.checked?true:false;
+				if(this.getAttribute("id")=="selectMorning"){
+					selectMoring(this,value);
+				}else{
+					selectAfterNoon(this,value);
+				}
+			});
+			mui('.mui-scroll-wrapper').scroll();
+			/*居中弹出菜单栏*/
+			mui('body').on('shown', '.mui-popover', function(e) {
+				//console.log('shown', e.detail.id);//detail为当前popover元素
+			});
+			mui('body').on('hidden', '.mui-popover', function(e) {
+				
+				console.log(e.detail);
+			});
+			/*居中弹出菜单栏*/
+			//获取会议室信息
+			function getThisRoom(){
+				
+				var table=document.getElementById("roomcontentID");
+				var startTime=document.getElementById("time1").innerHTML;
+				var endTime=document.getElementById("time2").innerHTML;
+				var roomQuery={
+					roomID:roomid,
+					startTime:startTime==undefined?"":startTime,
+					endTime:endTime==undefined?"":endTime,
+				};
+				table.innerHTML="";
+				mui.ajax(baseURL+'api/room/get/v2',{
+					data:roomQuery,
+					dataType:'json',
+					type:'get',
+					async:false,
+					timeout:10000,
+					headers:{
+						"Authorization":TicketStr
+					},success:function(data){
+						
+						if(data.code=="0"){
+							var dataList=data.data.data[0];
+							var RoomName=dataList.RoomName;
+							var Status=dataList.Status;
+							var roomContain=dataList.Contain;
+							var RoomArea=dataList.RoomArea;
+							var Owner=dataList.Owner;
+							var OwnerPhone=dataList.OwnerPhone;
+							var MeetingAddress=dataList.MeetingAddress;
+							var ID=dataList.ID;
+							var DeviceCount=dataList.DeviceCount;
+							var deviceList=dataList.deviceList;
+							var deviceStr="";
+							var orderList=dataList.OrderList;
+							var roomPic=dataList.Picture;
+							addOrderTime(orderList);
+							if(orderList!=""){
+								
+							}
+							if(deviceList!=undefined&&deviceList.length>0){
+								for(var j=0;j<deviceList.length;j++){
+									var deviceName=deviceList[j].deviceName;
+									var deviceId=deviceList[j].deviceID;
+									deviceStr+="<span class='deviceList'>"+deviceName+"</span>";
+								}
+							}
+							if (Status == "0") {
+								Status = "启用";
+							} else if (Status == "1") {
+								Status = "审核";
+							} else if (Status == "2") {
+								Status = "禁用";
+							} else if (Status == "3") {
+								Status = "维修";
+							} else if (Status == "4") {
+								Status = "预留";
+							}	
+							var li = document.createElement('div');
+							li.className = 'mui-table-view-cell mui-media';
+							var roomStr="";
+							li.innerHTML = "<p class='leftImg'><img class='mui-media-object mui-pull-left' src='"+roomPic+"'  onerror='defaultPic(this)'><span class='roomStatus'>"+Status+"</span></p><div class='mui-media-body' style=' width: calc(100% - 60px);'>"+RoomName+"<span style='font-size:12px;padding-left:10px;'>坐席"+roomContain+"人</span><p class='mui-ellipsis'><span>会议室地点："+MeetingAddress+"</span></p><p class='mui-ellipsis roomDeviceList'>"+deviceStr+"</p></div>"
+							table.appendChild(li);	
+						}else if(data.code=="30001"){//无效token、无权限
+							top.location.href="../login.html";
+						}else if(data.code=="30006"){
+							getMaxTicket();
+						}else{
+							mui.toast(data.message);
+						}
+					},error:function(err){
+						
+					}
+				})
+			}
+			function defaultPic(thisImg){
+				thisImg.setAttribute("src","../images/default.jpg");
+			}
+			//获取当前时间
+			function getNowDate(){
+				var str="";
+				var date=new Date();
+				var year=date.getFullYear();
+				var month=date.getMonth()+1;
+				var day=date.getDate();
+				var hours=date.getHours();
+				var minutes=date.getMinutes();
+				str='{"beginYear":'+year+',"beginMonth":'+month+',"beginDay":'+day+',"beginHours":'+hours+',"beginMinutes":'+minutes+'}';
+				return str;
+			}
+			
+			//根据所传参数得到指定时间格式
+			function defaultDate(type){
+				var str="";
+				var date=new Date();
+				var nextDate = new Date(date.getTime() + 24*60*60*1000); //后一天
+				var year=date.getFullYear();
+				var month=date.getMonth()+1;
+				var day=date.getDate();
+				var hours=date.getHours();
+				var minutes=date.getMinutes();
+				if(type=="day"){
+					str=year+"-"+addZero(month,2,"0")+"-"+addZero(day,2,"0")
+				}else if(type=="next"){
+					str=nextDate.getFullYear()+"-"+addZero(nextDate.getMonth()+1,2,"0")+"-"+addZero(nextDate.getDate(),2,"0");
+				}else if(type=="nextMinuStartMo"){
+					
+					str=nextDate.getFullYear()+"-"+addZero(nextDate.getMonth()+1,2,"0")+"-"+addZero(nextDate.getDate(),2,"0")+" 08:00";
+				}else if(type=="nextMinuEndtMo"){
+					str=nextDate.getFullYear()+"-"+addZero(nextDate.getMonth()+1,2,"0")+"-"+addZero(nextDate.getDate(),2,"0")+" 12:00";
+				}else if(type=="nextMinuStartAf"){
+					str=nextDate.getFullYear()+"-"+addZero(nextDate.getMonth()+1,2,"0")+"-"+addZero(nextDate.getDate(),2,"0")+" 14:00";
+				}else if(type=="nextMinuEndAf"){
+					str=nextDate.getFullYear()+"-"+addZero(nextDate.getMonth()+1,2,"0")+"-"+addZero(nextDate.getDate(),2,"0")+" 18:00";
+				}else{
+					str=year+"-"+addZero(month,2,"0")+"-"+addZero(day,2,"0")+" "+addZero(hours,2,"0")+":"+addZero(minutes,2,"0");
+				}
+				
+				return str;
+			}
+			//选择上午
+			function selectMoring(ele,status){
+				
+				var atBox=document.getElementById("selectAftorn");
+				if(status){
+					
+					if(!atBox.checked){
+						document.getElementById("time1").innerText=document.getElementById("time1").innerText.split(" ")[0]+" 08:00";
+						document.getElementById("time2").innerText=document.getElementById("time1").innerText.split(" ")[0]+" 12:00";
+						// document.getElementById("time1").innerText=defaultDate("day")+" 08:00";
+						// document.getElementById("time2").innerText=defaultDate("day")+" 12:00";
+					}else{
+						document.getElementById("time1").innerText=document.getElementById("time1").innerText.split(" ")[0]+" 08:00";
+						document.getElementById("time2").innerText=document.getElementById("time1").innerText.split(" ")[0]+" 18:00";
+					}
+					
+				}else{
+					
+					if(!atBox.checked){
+						document.getElementById("time1").innerText=document.getElementById("time1").innerText.split(" ")[0]+" 08:00";
+						document.getElementById("time2").innerText=document.getElementById("time1").innerText.split(" ")[0]+" 12:00";
+					}else{
+						document.getElementById("time1").innerText=document.getElementById("time1").innerText.split(" ")[0]+" 14:00";
+						document.getElementById("time2").innerText=document.getElementById("time1").innerText.split(" ")[0]+" 18:00";
+					}
+					
+				}	
+			}
+			//选择下午
+			function selectAfterNoon(ele,status){
+				var moBox=document.getElementById("selectMorning");
+				if(status){	
+					if(!moBox.checked){
+						document.getElementById("time1").innerText=document.getElementById("time1").innerText.split(" ")[0]+" 12:00";
+						document.getElementById("time2").innerText=document.getElementById("time1").innerText.split(" ")[0]+" 18:00";
+					}else{
+						document.getElementById("time1").innerText=document.getElementById("time1").innerText.split(" ")[0]+" 08:00";
+						document.getElementById("time2").innerText=document.getElementById("time1").innerText.split(" ")[0]+" 18:00";
+					}
+					
+				}else{
+					
+					if(!moBox.checked){
+						document.getElementById("time1").innerText=document.getElementById("time1").innerText.split(" ")[0]+" 08:00";
+						document.getElementById("time2").innerText=document.getElementById("time1").innerText.split(" ")[0]+" 12:00";
+					}else{
+						document.getElementById("time1").innerText=document.getElementById("time1").innerText.split(" ")[0]+" 08:00";
+						document.getElementById("time2").innerText=document.getElementById("time1").innerText.split(" ")[0]+" 12:00";
+					}
+				}
+			}
+			//动态创建时间表格
+			function addOrderTime(list){
+				
+				var table1=document.getElementById("startTimeBlockUl");
+				var table2=document.getElementById("meetingContentBlockUl");
+				var table3=document.getElementById("endTimeBlockUl");
+				table1.innerHTML="";
+				table2.innerHTML="";
+				table3.innerHTML="";
+				for(let j=0;j<15;j++){
+					//动态创建时间表格
+					var li1=document.createElement("li");
+					li1.className='time'+(j+8);
+					var str1=(j+8);
+					li1.innerHTML=addZero(str1,2,'0')+":00";;
+					
+					table1.appendChild(li1);
+					
+					var li2=document.createElement("li");
+					li2.className='timeBlock';
+					li2.innerHTML='<b time="">&nbsp;</b><b>&nbsp;</b><b>&nbsp;</b><b>&nbsp;</b>';
+					table2.appendChild(li2);
+					
+					var li3=document.createElement("li");
+					li3.className='time'+(j+9);
+					var str3=(j+9);
+					li3.innerHTML=addZero(str3,2,'0')+":00";
+					table3.appendChild(li3);
+				}
+				if(list.length!=0){
+					for(var i=0;i<list.length;i++){
+						//向时间表格中填写是否有会信息
+						var stratTime=list[i].StartTime;
+						var endTime=list[i].Endtime;
+						//if(stratTime.split(" ")[0]==defaultDate("day")){
+						if(stratTime.split(" ")[0]==(document.getElementById("time1").innerHTML).split(" ")[0]){
+							var startInfo=stratTime.split(" ")[1];
+							var endInfo=endTime.split(" ")[1];
+							var startH=startInfo.split(":")[0];
+							var startM=startInfo.split(":")[1];
+							var startS=startInfo.split(":")[2];
+							var endH=endInfo.split(":")[0];
+							var endM=endInfo.split(":")[1];
+							var endS=endInfo.split(":")[2];
+							var querystartId=document.querySelector("#startTimeBlockUl");
+							var queryStartTime=querystartId.querySelectorAll('li');
+							var meetingIndex=0;
+							var endIndex=0;
+							for(var m=0;m<queryStartTime.length;m++){
+								if(queryStartTime[m].innerHTML.split(":")[0]==startH){
+									meetingIndex=m;
+									break;
+								}
+							}
+							var timeSec=(getTimeSec(stratTime,endTime))/(1000*60);//开会总用时
+							var spanIndex=0;
+							//开始时间所占用的第几块
+							if(startM!="00"){
+								spanIndex=Math.ceil(parseInt(startM)/15)
+							}else{
+								spanIndex=Math.ceil(parseInt(startM)/15)+1;
+							}
+							//结束时间所占用的第几块
+							endIndex=Math.ceil(parseInt(endM)/15);
+							var totalBlock=((parseInt(endH)-parseInt(startH))-1)*4+(4-spanIndex+1)+endIndex;//会议用时占用的所有块数
+							
+							var startBlock=((parseInt(startH)-8)*4)+spanIndex;
+							//开始会议所占用的第几块
+							var blockul=document.querySelector("#meetingContentBlockUl");
+							var lengthb=blockul.querySelectorAll("b");
+							for(var k=startBlock;k<totalBlock+startBlock;k++){
+								lengthb[k-1].innerHTML="有会";
+							}
+						}
+					}
+				}	
+			}
+			//更改参会/不参会按钮，更新参会人员列表
+			function changeJoin(){
+				var notJoin=document.getElementById("notJoin").checked;
+				var newArr=[];
+			
+				if(notJoin){
+					selfJoinStr="";
+					if(userListArr.length>0){
+						var count=0;
+						for (var i=0;i<userListArr.length;i++){
+							newArr.push({
+								value:userListArr[i],
+								text:userListArr[i].fullname
+							})
+							if(userListArr[i].userID==mineJoinObj.userID){
+								count++;
+								break;
+								
+							}else{
+								
+							}
+						}
+						//userPicker.setData(newArr);
+						if(count==0){
+							document.getElementById("selectCount").innerHTML=parseInt(document.getElementById("selectCount").innerHTML)+1;
+							//如果数组中没有预约人，并且预约人选中了我要参会，则将预约人也加入到选择主持人的列表中
+							userListArr.push(mineJoinObj);
+							newArr.push({
+								value:mineJoinObj,
+								text:mineJoinObj.fullname
+							})
+							userPicker.setData(newArr);
+						}else{
+							
+						}
+					}else{
+						document.getElementById("selectCount").innerHTML=parseInt(document.getElementById("selectCount").innerHTML)+1;
+						userListArr.push(mineJoinObj);
+						newArr.push({
+							value:mineJoinObj,
+							text:mineJoinObj.fullname
+						})
+						userPicker.setData(newArr);
+					}
+					
+				}else{
+					selfJoinStr=selfLoginUserId;
+					if(userListArr.length>0){
+						var count=0;
+						for (var i=0;i<userListArr.length;i++){
+							
+							if(userListArr[i].userID==mineJoinObj.userID){
+								count++;
+								userListArr.remove(userListArr[i]);
+								break;
+								
+							}else{
+								newArr.push({
+									value:userListArr[i],
+									text:userListArr[i].fullname
+								})
+							}
+						}
+						if(count>0){
+							document.getElementById("selectCount").innerHTML=parseInt(document.getElementById("selectCount").innerHTML)-1;
+						}
+					}else{
+						document.getElementById("selectCount").innerHTML=parseInt(document.getElementById("selectCount").innerHTML)-1;
+					}
+					userPicker.setData(newArr);
+				}
+			}
+			//提交预约会议信息
+			function submitOrder(){
+				
+				checkFiled();
+				//document.getElementsByClassName("loadingPage")[0].style.display="block";
+			}
+			function submitCheckOrder(){
+				
+				//如果没有选择任何人，则判断预约人是否参会
+				if(userListArr.length==0){
+					if(document.getElementById("notJoin").checked){
+						if(userListArr.indexOf(mineJoinObj)>=0){
+							
+						}else{
+							userListArr.push(mineJoinObj);
+						}
+					}
+				}
+				deviceListArrChecked=[];
+				var selectContent=document.getElementById("middlePopover");
+				var checkBoxDevice=selectContent.querySelectorAll("li");
+				for(var i=0;i<checkBoxDevice.length;i++){
+					if(checkBoxDevice[i].querySelector("input").checked){
+						var str222=new Object();
+						str222.deviceid=checkBoxDevice[i].getAttribute("deviceid");
+						str222.deviceName=checkBoxDevice[i].getAttribute("deviceName");
+						str222.remark=checkBoxDevice[i].getAttribute("remark");
+						deviceListArrChecked.push(str222);
+					}
+				}
+				var order1={
+					"MeetingRoomID": roomid,
+					"Title":document.getElementById("Title").value,
+					"StartTime": document.getElementById("time1").innerText,
+					"Endtime": document.getElementById("time2").innerText,
+					"Linkman": document.getElementById("Linkman").value,
+					"LinkPhone": document.getElementById("LinkPhone").value,
+					"Hoster": document.getElementById("showUserPicker").value,
+					"HosterPhone": document.getElementById("hostPhone").value,
+					"Amount": document.getElementById("selectCount").innerText,
+					"Special": document.getElementById("specialText").value,
+					"userList": JSON.parse(JSON.stringify(userListArr)),
+					"deviceList": JSON.parse(JSON.stringify(deviceListArrChecked))
+				};
+				document.getElementsByClassName("loadingPage")[0].style.display="block";
+				mui.ajax(baseURL+'api/order/insert',{
+					data:order1,
+					dataType:'json',
+					type:'post', 
+					async:true,
+					timeout:10000,
+					headers:{
+						"Authorization":TicketStr
+					},success:function(data){
+						
+						mui.toast(data.message);
+						document.getElementsByClassName("loadingPage")[0].style.display="none";
+						if(data.code=="0"){
+							setTimeout(function(){
+								window.location.href="room.html";
+							},2000);
+						}else if(data.code=="30001"){//无效token、无权限
+							top.location.href="../login.html";
+						}else if(data.code=="30006"){
+							getMaxTicket();
+						}
+						
+					},error:function(err){
+						mui.toast(err);
+					},
+				})
+			}
+			//判断必填元素是否全部填写
+			function checkFiled(){
+				if(document.getElementById("Title").value==""){
+					mui.toast("会议主题为必填项")
+					return false;
+					
+				}else if(document.getElementById("Linkman").value==""){
+					mui.toast("联系人为必填项")
+					return false;
+					
+				}else if(document.getElementById("LinkPhone").value==""){
+					mui.toast("联系电话为必填项")
+					return false;
+					
+				}else{
+					submitCheckOrder();
+				}
+			}
+			
+			function getRoomDeviceList(){
+				var deviceQuery={
+					roomid:roomid,
+					deviceName:"",
+					type:"",
+					sort:"",
+					pageSize:"100",
+					page:1
+				};
+				 var table=document.getElementById("deviceList");
+				 table.innerHTML="";
+				mui.ajax(baseURL+'api/device/getdeviceList',{
+					data:deviceQuery,
+					dataType:'json',
+					type:'get',
+					timeout:10000,
+					headers:{
+						"Authorization":TicketStr
+					},success:function(data){
+						if(data.code=="0"){
+							var dataList=data.data.data;
+							deviceListArr=dataList;
+							
+							for(var i=0;i<dataList.length;i++){
+								
+								var deviceName=dataList[i].DeviceName;
+								var deviceId=dataList[i].ID;
+								var remark="";
+								var deviceAmount=dataList[i].Amount;
+								var li = document.createElement('li');
+								li.className = 'mui-table-view-cell';
+								setAttribute(li,{"deviceId":deviceId,"deviceName":deviceName,"remark":remark});
+								li.innerHTML = '<div class="mui-input-row mui-checkbox mui-left" style="width:100%;"><label style="width:100%">'+deviceName+'('+deviceAmount+')</label><input name="checkbox" type="checkbox"></div>';
+								table.appendChild(li);	
+							}
+						}else if(data.code=="30001"){//无效token、无权限
+							top.location.href="../login.html";
+						}else if(data.code=="30006"){//短token无效,获取长token
+							getMaxTicket();
+						}else{
+							top.location.href="../login.html";
+						}
+						
+					},error:function(err){
+						console.log(err);
+					}
+				})
+			}
+			//重置
+			function resetOrderPage(){
+				window.location.reload();
+			}
+		</script>
+	</body>
+
+</html>

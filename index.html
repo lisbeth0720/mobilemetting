@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>首页</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="css/mui.min.css" rel="stylesheet" />
+		
+		<link href="css/style.css" rel="stylesheet" />
+		<link href="css/iconfont.css" rel="stylesheet" />
+		<style>
+			.mui-bar .mui-icon-search{
+				position: absolute;
+				right:10px;
+			}
+			* {
+				touch-action: none;
+			}
+			.mui-control-content.mui-active{
+				height:calc(100% - 94px);
+			}
+			#signOut{
+				color: #666;
+				font-size:12px;
+				display: block;
+				height:44px;
+				line-height: 44px;
+			}
+			/* #signOut img{
+				width: 18px;
+				height: 18px;
+			
+			} */
+		</style>
+	</head>
+
+	<body>
+		<div id="homePage">
+			<header class="mui-bar mui-bar-nav">
+				<a id="historyBtn" class="mui-icon mui-icon-left-nav mui-pull-left" onclick="backFunc()"></a>
+				<h1 class="mui-title" id="title">会议室</h1>
+				<a id="readAll" style="float: right;"></a>
+				<a id="signOut" style="float: right;"></a>
+			</header>	
+			<nav class="mui-bar mui-bar-tab">
+			   <a id="room" class=" mui-active mui-tab-item {if $_GPC['op'] == 'display'}mui-active{/if}" href="#tabBarRoom" titleMessage="会议室">
+			        <span class="mui-icon mui-icon-home"></span>
+			        <span class="mui-tab-label">会议室</span>
+			    </a>				
+			    <a id="message" class="mui-tab-item {if $_GPC['op'] == 'detail'}mui-active{/if}" href="#tabBarMessage" titleMessage="消息中心">
+			        <span class="mui-icon mui-icon-chatbubble"></span>
+			        <span class="mui-tab-label">消息</span>
+			    </a>
+			   <a id="mine" class="mui-tab-item  {if $_GPC['op'] == 'home'}mui-active{/if}"
+			      href="#tabBarMine" titleMessage="个人中心">   
+			       <span class="mui-icon mui-icon mui-icon-person"></span>
+			       <span class="mui-tab-label">我的</span>
+			   </a>
+			</nav>
+			<div class="mui-content">
+				<div id="tabBarRoom" class="mui-iframe-wrapper mui-control-content mui-active">
+					<iframe src='room/room.html' id='room' name='room' class="activeIframe"></iframe>
+				</div>	
+				<div id="tabBarMessage" class="mui-control-content mui-iframe-wrapper">
+					<iframe src='message/message.html' id='message' name='message'></iframe>
+				</div>
+				<div id="tabBarMine" class="mui-control-content mui-iframe-wrapper">
+					<iframe src='mine/mine.html' id='mine' name='mine'></iframe>
+				</div>	
+			</div>
+		<script src="js/mui.js"></script>
+		<script src="js/common.js"></script>
+		<script type="text/javascript">
+			mui.init({
+				swipeBack:true //启用右滑关闭功能
+			});
+			(function($,doc){
+				//切换tab标签修改顶部title
+				mui('.mui-bar-tab').on('tap', 'a', function(e) {
+					// debugger;
+					//window.history.forward(1);
+					var targetTab = this.getAttribute('titleMessage');
+					var thisID=this.id;
+					for(var k=0;k<document.getElementsByTagName("iframe").length;k++){
+						document.getElementsByTagName("iframe")[k].classList.remove("activeIframe");
+						if(document.getElementsByTagName("iframe")[k].id==thisID){
+							document.getElementsByTagName("iframe")[k].classList.add("activeIframe");		
+							break;
+						}
+					}
+					document.querySelector("#title").innerHTML=targetTab;
+					if(targetTab=="消息中心"){
+						var tabID=this.id;
+						document.getElementById("readAll").innerHTML='<span class="mui-icon mui-icon-checkmarkempty"></span>';
+						for(var i=0;i<document.getElementsByTagName("iframe").length;i++){
+							if(tabID==document.getElementsByTagName("iframe")[i].id){
+								document.getElementsByTagName("iframe")[i].src="message/message.html";
+							}
+						}	
+					}else{
+						document.getElementById("readAll").innerHTML='';
+					}
+					if(targetTab=="个人中心"){
+						//document.getElementById("signOut").innerHTML='退出登录';
+					}else{
+						document.getElementById("signOut").innerHTML='';
+					}
+				});	
+			}(mui,document))
+			
+		</script>
+	</body>
+
+</html>
