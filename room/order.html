@@ -782,6 +782,7 @@
 				var str="";
 				var date=new Date();
 				var nextDate = new Date(date.getTime() + 24*60*60*1000); //后一天
+				
 				var year=date.getFullYear();
 				var month=date.getMonth()+1;
 				var day=date.getDate();
@@ -807,8 +808,7 @@
 				return str;
 			}
 			//选择上午
-			function selectMoring(ele,status){
-				
+			function selectMoring(ele,status){	
 				var atBox=document.getElementById("selectAftorn");
 				if(status){
 					
@@ -859,7 +859,7 @@
 			}
 			//动态创建时间表格
 			function addOrderTime(list){
-				
+				//
 				var table1=document.getElementById("startTimeBlockUl");
 				var table2=document.getElementById("meetingContentBlockUl");
 				var table3=document.getElementById("endTimeBlockUl");
@@ -938,7 +938,6 @@
 			function changeJoin(){
 				var notJoin=document.getElementById("notJoin").checked;
 				var newArr=[];
-			
 				if(notJoin){
 					selfJoinStr="";
 					if(userListArr.length>0){
