@@ -273,7 +273,7 @@
 				})
 			}	
 			function getRoomList(isScroll){
-				debugger;
+				//debugger;
 				var startTime=parent.startTime;
 				var endTime=parent.endTime;
 				var deviceID=parent.deviceID;
@@ -487,9 +487,7 @@
 									var hrefLink="userList.html?id="+roomID;
 									var li = document.createElement('li');
 									li.className = 'mui-slider-item mui-table-view-cell mui-media';
-									var roomStr="";
-									
-									
+									var roomStr="";									
 									li.innerHTML = "<a href="+hrefLink+"><p class='leftImg'><img class='mui-media-object mui-pull-left' src='"+roomPic+"' onerror='defaultPic(this)'><span class='roomStatus'>"+Status+"</span></p><div class='mui-media-body'>"+RoomName+"<span style='font-size:12px;padding-left:10px;'>坐席"+roomContain+"人</span><p class='mui-ellipsis'><span>会议室地点："+MeetingAddress+"</span></p><p class='mui-ellipsis roomDeviceList'>"+deviceStr+"</p></div></a>";
 									if(i==0){
 										var eleLi=document.createElement('li');
@@ -506,8 +504,7 @@
 										table.appendChild(eleLi);
 										
 									}else{
-										table.appendChild(li);
-										
+										table.appendChild(li);		
 									}
 								}
 							}
