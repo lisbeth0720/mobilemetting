@@ -130,7 +130,6 @@
 						localStorage.setItem('Ticket',"");
 						localStorage.setItem('MaxTicket',"");
 						localStorage.setItem('username',"");
-				
 						//var signOutBtn = window.parent.document.getElementById("signOut");
 						//signOutBtn.href="../login.html";
 						window.parent.location.href="../login.html";
@@ -153,8 +152,7 @@
 			});  */
 			mui.init({
 				swipeBack: false,
-			});
-			
+			});	
 			//目前先不用上拉加载
 			/* var pullToRefresh = mui("#dataList").pullToRefresh({//上拉加载
 				up: {
@@ -173,7 +171,6 @@
 			});  */
 
 			getMeetRoom();
-		
 			function getMeetRoom(isScroll){//获取常用会议室
 			   if (!that) {
 				  that = this;
